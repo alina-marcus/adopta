@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import db
-from models import Dog
+from adopta.models.dog import Dog
 
 dogs_bp = Blueprint("dogs", __name__)
 

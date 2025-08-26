@@ -14,10 +14,9 @@ def create_app():
     migrate.init_app(app, db)
 
     # Models importieren
-    from models import Dog
 
     # Routes registrieren
-    from routes import dogs_bp
+    from adopta.routes.dogs import dogs_bp
     app.register_blueprint(dogs_bp, url_prefix="/dogs")
 
     return app
