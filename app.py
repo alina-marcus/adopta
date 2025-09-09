@@ -1,25 +1,19 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from config import Config
+from db import Base, engine
+from routes.adopters import adopters_bp
+from routes.dogs import dogs_bp
+from routes.applications import applications_bp
 
-db = SQLAlchemy()
-migrate = Migrate()
+app = Flask(__name__)
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object(Config)
+# Create tables if not exist
+Base.metadata.create_all(engine)
 
-    db.init_app(app)
-    migrate.init_app(app, db)
+# Register Blueprints
+app.register_blueprint(adopters_bp)
+app.register_blueprint(dogs_bp)
+app.register_blueprint(applications_bp)
 
-    # Models importieren
+if __name__ == "__main__":
+    app.run(debug=True)
 
-    # Routes registrieren
-    from adopta.routes.dogs import dogs_bp
-    app.register_blueprint(dogs_bp, url_prefix="/dogs")
-
-    return app
-
-# Flask CLI braucht diese Variable
-app = create_app()
