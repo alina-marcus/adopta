@@ -10,7 +10,9 @@ app = Flask(__name__)
 
 # Create tables if not exist
 Base.metadata.create_all(engine)
-
+@app.route("/", methods=["GET"])
+def home_string():
+    return "adopta api"
 # Register Blueprints
 app.register_blueprint(adopters_bp)
 app.register_blueprint(dogs_bp)
@@ -20,3 +22,7 @@ app.register_blueprint(home_checks_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
