@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+ENV/
+.venv/
+*.log
+media/
+staticfiles/
+
+# React / Node.js
+node_modules/
+build/
+dist/
+npm-debug.log*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Misc
+.DS_Store
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.iml
+*.cache
+*.tmp
+*.swp
+*.bak
+*.old
+*.orig
+~$*
+coverage/
+*.tgz
+.eslintcache
+.node-repl-history
