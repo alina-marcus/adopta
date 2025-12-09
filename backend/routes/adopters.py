@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from db import get_session
 from models.adopter import Adopter
 
-adopters_bp = Blueprint("adopters", __name__)
+adopters_bp = Blueprint("adopters", __name__, url_prefix="/api/adopters")
 
 @adopters_bp.route("/adopters", methods=["POST"])
 def create_adopter():

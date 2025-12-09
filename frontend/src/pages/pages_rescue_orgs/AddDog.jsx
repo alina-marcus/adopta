@@ -76,14 +76,12 @@ export default function DogForm() {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-  const url = "http://localhost:8001/api/dogs";
+  const url = "http://localhost:5000/dogs";
   try {
     const response = await fetch(url, {
       method: "POST",
-      mode: 'cors',
       headers: {
-      "Content-Type": "application/json",
-      'Access-Control-Allow-Origin': '*'
+      "Content-Type": "application/json"
       },
       body: JSON.stringify(formData),
     });

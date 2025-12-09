@@ -3,7 +3,7 @@ from db import get_session
 from models.home_check import HomeCheck
 from models.home_check_verification import HomeCheckVerification
 
-home_checks_bp = Blueprint("home_checks", __name__)
+home_checks_bp = Blueprint("home_checks", __name__, url_prefix="/api/home_checks")
 
 @home_checks_bp.route("/home_checks", methods=["POST"])
 def create_home_check():
