@@ -11,3 +11,4 @@ class Application(Base):
 
     adopter = relationship("Adopter", back_populates="applications")
     dog = relationship("Dog", back_populates="applications")
+    home_checks = relationship("HomeCheck", back_populates="application")
