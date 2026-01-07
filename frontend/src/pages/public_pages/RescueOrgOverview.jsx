@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function RescueOrgOverview() {
   return (
     <main className="px-6 py-8">
@@ -8,7 +10,7 @@ export default function RescueOrgOverview() {
 
       <div className="text-center mb-12">
         <Link
-          to="/tierschutzvereine/registrieren"
+          to="/tierschutzvereine/registrieren" 
           className="inline-block px-6 py-3 rounded-xl font-semibold shadow bg-[#fa6a02] hover:bg-[#a34502] text-white"
         >
           Jetzt anmelden

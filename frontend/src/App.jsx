@@ -17,6 +17,7 @@ import Home from './pages/public_pages/Home';
 import RescueOrgOverview from './pages/public_pages/RescueOrgOverview';
 import SignUpRescueOrg from './pages/pages_rescue_orgs/SignUpRescueOrg';
 import HomeCheckerOverview from './pages/public_pages/HomeCheckerOverview';
+import HomeCheckerSignup from './pages/public_pages/HomeCheckerSignup';
 import AdoptersOverview from './pages/public_pages/AdoptersOverview';
 import Contact from './pages/public_pages/Contact';
 import Imprint from './pages/public_pages/Imprint';
@@ -32,6 +33,8 @@ import ReviewApplication from './pages/pages_rescue_orgs/ReviewApplication';
 
 // Home Checker Pages
 import HomeCheckerDash from './pages/pages_home_checkers/HomeCheckerDash';
+import HomeCheckReview from './pages/pages_home_checkers/HomeCheckReview';
+import HomeCheckReviewDetail from './pages/pages_home_checkers/HomeCheckReviewDetail';
 
 // Adopters Pages
 import Application from './pages/pages_adopters/Application';
@@ -52,6 +55,7 @@ function App() {
         <Route path="/tierschutzvereine" element={<RescueOrgOverview />} />
         <Route path="/tierschutzvereine/registrieren" element={<SignUpRescueOrg />} />
         <Route path="/ehrenamt-im-tierschutz" element={<HomeCheckerOverview />} />
+        <Route path="/ehrenamt-im-tierschutz/registrieren" element={<HomeCheckerSignup />} />
         <Route path="/adoptanten" element={<AdoptersOverview />} />
         <Route path="/kontakt" element={<Contact />} />
         <Route path="/impressum" element={<Imprint />} />
@@ -62,11 +66,13 @@ function App() {
         <Route path="/tsv/ueberblick" element={<RescueOrgDash />} />
         <Route path="/tsv/hinzufuegen" element={<AddDog />} />
         <Route path="/tsv/meine-hunde" element={<MyDogs />} />
-        <Route path="/tsv/hund" element={<DogProfile />} />
+        <Route path="/tsv/hund/:id" element={<DogProfile />} />
         <Route path="/tsv/bewerbung-pruefen" element={<ReviewApplication />} />
 
         {/* Home checkers */}
         <Route path="/vor-und-nachkontrollen" element={<HomeCheckerDash />} />
+        <Route path="/vor-und-nachkontrollen/:id" element={<HomeCheckReview />} />
+        <Route path="/vor-und-nachkontrollen/detail/" element={<HomeCheckReviewDetail />} />
 
         {/* Adopters */}
         <Route path="/bewerbung" element={<Application />} />

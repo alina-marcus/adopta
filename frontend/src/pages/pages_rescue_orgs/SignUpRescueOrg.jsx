@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function SignUpRescueOrg() {
   const [formData, setFormData] = useState({
-    vereinName: "",
+    org_name: "",
     ansprechpartner: "",
     email: "",
     telefon: "",
@@ -20,11 +20,38 @@ export default function SignUpRescueOrg() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("📋 Tierschutzverein registriert:", formData);
-    alert("Anmeldung erfolgreich! (siehe Konsole)");
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const url = "http://localhost:5001/rescue-organizations";
+console.log(formData);
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    console.log("Rescue org submit triggered");
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("Backend response:", result);
+
+    // Optional: Success Handling
+    // navigate("/dashboard");
+    // setFormData(initialState);
+
+  } catch (error) {
+    console.error("Submit error:", error.message);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
@@ -35,14 +62,14 @@ export default function SignUpRescueOrg() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="vereinName" className="block font-semibold mb-1">
+            <label htmlFor="org_name" className="block font-semibold mb-1">
               Vereinsname
             </label>
             <input
               type="text"
-              id="vereinName"
-              name="vereinName"
-              value={formData.vereinName}
+              id="org_name"
+              name="org_name"
+              value={formData.org_name}
               onChange={handleChange}
               required
               className="w-full border rounded-lg px-3 py-2"

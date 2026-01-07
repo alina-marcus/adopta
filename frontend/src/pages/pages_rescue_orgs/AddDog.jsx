@@ -5,316 +5,550 @@ export default function DogForm() {
     dog_name: "",
     chip_number: "",
     passport_number: "",
-    gender: "Female",
+    gender: "",
     birth_date: "",
-    height_cm: "",
-    weight_kg: "",
+    height_cm: null,
+    weight_kg: null,
     color: "",
     unique_features: "",
-    has_illnesses: false,
     illness_description: "",
+    energy_level: "",
+    additional_notes: "",
+    shelter_org_name: "",
+    case_manager_name: "",
+    case_manager_email: "",
+    current_country: "",
+    current_location_type: "",
+    current_location_description: "",
+    has_illnesses: false,
     treatment_costs_covered: false,
-    has_characteristics: false,
-    characteristics_description: "",
     neutered: false,
     vaccinated: false,
-    can_climb_stairs: true,
-    needs_elevator: false,
+    can_climb_stairs: false,
     has_handicap: false,
     is_blind: false,
     is_deaf: false,
-    is_house_trained: true,
-    can_be_alone_hours: "",
+    is_house_trained: false,
     is_good_with_kids: false,
     is_good_with_males: false,
     is_good_with_females: false,
     is_good_with_cats: false,
     is_good_with_other_animals: false,
     needs_garden: false,
-    needs_fence: false,
     needs_experienced_owner: false,
-    barks_much: false,
     guarding_instinct: false,
     hunting_instinct: false,
     can_live_in_city: false,
     transport_tolerant: false,
-    energy_level: "Medium",
     training_needed: false,
-    additional_notes: "",
     available_for_adoption: false,
     available_as_foster: false,
     looking_for_sponsorship: false,
-    shelter_org_name: "",
-    case_manager_name: "",
-    case_manager_email: "",
-    current_country: "",
-    current_location_type: "Shelter",
-    current_location_description: "",
   });
 
-  // Berechnete Felder
-  const calcAgeFlags = (birthDate) => {
-    if (!birthDate) return { is_senior: false, is_puppy: false };
-    const birth = new Date(birthDate);
-    const ageYears = (Date.now() - birth) / (1000 * 60 * 60 * 24 * 365);
-    return {
-      is_senior: ageYears >= 8,
-      is_puppy: ageYears < 1,
-    };
-  };
+  const REQUIRED_FIELDS = [
+    "dog_name",
+    "chip_number",
+    "birth_date",
+    "height_cm",
+    "weight_kg",
+    "color",
+    "neutered",
+    "vaccinated",
+    "available_for_adoption",
+    "shelter_org_name",
+    "case_manager_name",
+    "case_manager_email",
+  ]
 
-  const { is_senior, is_puppy } = calcAgeFlags(formData.birth_date);
+  const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, type, value, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
+  const validate = () => {
+    const newErrors = {};
+
+    REQUIRED_FIELDS.forEach((field) => {
+      if (!formData[field]) {
+        newErrors[field] = "Pflichtfeld";
+      }
     });
-  };
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-
-  const url = "http://localhost:5000/dogs";
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-      "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData),
-    });
-    console.log('function ran');
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+    // Speziallogik (kommt bei Punkt 10 wieder)
+    if (formData.has_illnesses && !formData.illness_description) {
+      newErrors.illness_description = "Bitte Krankheiten beschreiben";
     }
 
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleChange = (e) => {
+  const { name, value, type, checked } = e.target;
+
+  setFormData({
+    ...formData,
+    [name]: type === "checkbox"
+      ? checked
+      : type === "number"
+        ? Number(value)
+        : value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    const data = new FormData();
+    if (imageFile) data.append("image", imageFile);
+    data.append("data", JSON.stringify(formData));
+
+    await fetch("http://localhost:5001/dogs", {
+      method: "POST",
+      body: data,
+    });
+
+    alert("Hund gespeichert");
+  };
+
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-6 space-y-6"
+      className="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow space-y-8"
     >
-      <h1 className="text-2xl font-bold mb-4">🐾 Hund hinzufügen</h1>
+      <h1 className="text-3xl font-bold">Hund hinzufügen</h1>
 
-      {/* Grunddaten */}
+      {/* FOTO */}
       <section>
-        <h2 className="font-semibold text-lg mb-2">Allgemeine Informationen</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <input name="dog_name" placeholder="Name des Hundes" value={formData.dog_name} onChange={handleChange} className="border p-2 rounded" />
-          <input name="chip_number" placeholder="Mikrochipnummer" value={formData.chip_number} onChange={handleChange} className="border p-2 rounded" />
-          <input name="passport_number" placeholder="EU-Heimtierausweisnummer" value={formData.passport_number} onChange={handleChange} className="border p-2 rounded" />
-          <select name="gender" value={formData.gender} onChange={handleChange} className="border p-2 rounded">
-            <option value="Male">Männlich</option>
-            <option value="Female">Weiblich</option>
-          </select>
-          <input type="date" name="birth_date" value={formData.birth_date} onChange={handleChange} className="border p-2 rounded" />
-          <input type="number" name="height_cm" placeholder="Schulterhöhe (cm)" value={formData.height_cm} onChange={handleChange} className="border p-2 rounded" />
-          <input type="number" name="weight_kg" placeholder="Gewicht (kg)" value={formData.weight_kg} onChange={handleChange} className="border p-2 rounded" />
-        </div>
-      </section>
-
-      {/* Beschreibungen */}
-      <section>
-        <h2 className="font-semibold text-lg mb-2">Beschreibung</h2>
-        <textarea name="color" placeholder="Farbbeschreibung" value={formData.color} onChange={handleChange} className="border p-2 rounded w-full" />
-        <textarea name="unique_features" placeholder="Alleinstellungsmerkmale" value={formData.unique_features} onChange={handleChange} className="border p-2 rounded w-full" />
-      </section>
-
-      {/* Gesundheit */}
-<section>
-  <h2 className="font-semibold text-lg mb-2">Gesundheit</h2>
-
-  <div className="grid grid-cols-2 gap-2">
-    {/* Checkbox: Hat bekannte Krankheiten */}
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        name="has_illnesses"
-        checked={formData.has_illnesses}
-        onChange={handleChange}
-      />
-      <span>Hat bekannte Krankheiten?</span>
-    </label>
-
-    {/* Behandlungskosten: nur anzeigen, wenn Krankheiten bekannt */}
-    {formData.has_illnesses && (
-      <label className="flex items-center space-x-2">
+        <label className="block font-semibold mb-1">Profilfoto</label>
         <input
-          type="checkbox"
-          name="treatment_costs_covered"
-          checked={formData.treatment_costs_covered}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
         />
-        <span>Behandlungskosten werden übernommen?</span>
-      </label>
-    )}
-
-    {/* Weitere Gesundheits-Checkboxen */}
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        name="neutered"
-        checked={formData.neutered}
-        onChange={handleChange}
-      />
-      <span>Ist kastriert?</span>
-    </label>
-
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        name="vaccinated"
-        checked={formData.vaccinated}
-        onChange={handleChange}
-      />
-      <span>Ist geimpft?</span>
-    </label>
-
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        name="has_handicap"
-        checked={formData.has_handicap}
-        onChange={handleChange}
-      />
-      <span>Hat körperliche Einschränkung?</span>
-    </label>
-
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        name="is_blind"
-        checked={formData.is_blind}
-        onChange={handleChange}
-      />
-      <span>Ist blind?</span>
-    </label>
-
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        name="is_deaf"
-        checked={formData.is_deaf}
-        onChange={handleChange}
-      />
-      <span>Ist taub?</span>
-    </label>
-  </div>
-
-  {/* Beschreibung der Krankheiten */}
-  {formData.has_illnesses && (
-    <textarea
-      name="illness_description"
-      placeholder="Beschreibung der Krankheiten"
-      value={formData.illness_description}
-      onChange={handleChange}
-      className="border p-2 rounded w-full mt-2"
-    />
-  )}
-</section>
-
-
-      {/* Charakter & Verhalten */}
-      <section>
-        <h2 className="font-semibold text-lg mb-2">Charakter & Verhalten</h2>
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            ["is_house_trained", "Stubenrein"],
-            ["can_climb_stairs", "Kann Treppen steigen"],
-            ["needs_elevator", "Braucht Aufzug"],
-            ["is_good_with_kids", "Verträglich mit Kindern"],
-            ["is_good_with_males", "Verträglich mit Rüden"],
-            ["is_good_with_females", "Verträglich mit Hündinnen"],
-            ["is_good_with_cats", "Verträglich mit Katzen"],
-            ["is_good_with_other_animals", "Verträglich mit anderen Tieren"],
-            ["barks_much", "Bellt viel"],
-            ["guarding_instinct", "Hat Hütetrieb"],
-            ["hunting_instinct", "Hat Jagdtrieb"],
-            ["can_live_in_city", "Stadttauglich"],
-            ["transport_tolerant", "Verträgt Autofahrten"],
-          ].map(([name, label]) => (
-            <label key={name} className="flex items-center space-x-2">
-              <input type="checkbox" name={name} checked={formData[name]} onChange={handleChange} />
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
-        <div className="grid grid-cols-2 gap-4 mt-3">
-          <input type="number" name="can_be_alone_hours" placeholder="Wie viele Stunden kann der Hund allein bleiben" value={formData.can_be_alone_hours} onChange={handleChange} className="border p-2 rounded" />
-        </div>
-        <div className="mb-4">
-  <label htmlFor="energy_level" className="block font-medium mb-1">
-    Energielevel
-  </label>
-  <select
-    id="energy_level"
-    name="energy_level"
-    value={formData.energy_level}
-    onChange={handleChange}
-    className="border p-2 rounded w-full"
-  >
-    <option value="">Bitte wählen...</option>
-    <option value="Low">Niedrig</option>
-    <option value="Medium">Mittel</option>
-    <option value="High">Hoch</option>
-  </select>
-</div>
-
       </section>
 
-      {/* Vermittlungsstatus */}
-      <section>
-        <h2 className="font-semibold text-lg mb-2">Vermittlung</h2>
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            ["available_for_adoption", "Zur Adoption freigegeben"],
-            ["available_as_foster", "Als Pflegehund verfügbar"],
-            ["looking_for_sponsorship", "Sucht Patenschaft"],
-          ].map(([name, label]) => (
-            <label key={name} className="flex items-center space-x-2">
-              <input type="checkbox" name={name} checked={formData[name]} onChange={handleChange} />
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
-      </section>
+      <h2>Grunddaten</h2>
 
-      {/* Vermittlerdaten */}
-      <section>
-        <h2 className="font-semibold text-lg mb-2">Vermittler / Standort</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <input name="shelter_org_name" placeholder="Name des Tierschutzvereins" value={formData.shelter_org_name} onChange={handleChange} className="border p-2 rounded" />
-          <input name="case_manager_name" placeholder="Name des Vermittlers" value={formData.case_manager_name} onChange={handleChange} className="border p-2 rounded" />
-          <input name="case_manager_email" placeholder="E-Mail des Vermittlers" type="email" value={formData.case_manager_email} onChange={handleChange} className="border p-2 rounded" />
-          <input name="current_country" placeholder="Aktuelles Land" value={formData.current_country} onChange={handleChange} className="border p-2 rounded" />
-          <select name="current_location_type" value={formData.current_location_type} onChange={handleChange} className="border p-2 rounded">
-            <option value="Shelter">Tierheim</option>
-            <option value="Kill Shelter">Tötungsstation</option>
-            <option value="Foster Home">Pflegestelle</option>
-            <option value="Adopted">Adoptiert</option>
-            <option value="Other">Andere</option>
-          </select>
-        </div>
-        <textarea name="current_location_description" placeholder="Ortsbeschreibung" value={formData.current_location_description} onChange={handleChange} className="border p-2 rounded w-full mt-2" />
-      </section>
+      {/* ZWEI SPALTEN */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LINKS */}
+        <section className="space-y-4">
+          <Field 
+            label="Name" 
+            name="dog_name"
+            value={formData.dog_name}
+            error={errors.dog_name} 
+            onChange={handleChange} 
+          />
+          <Field 
+            label="Chipnummer" 
+            name="chip_number"
+            value={formData.chip_number}
+            error={errors.chip_number}
+            onChange={handleChange} 
+          />
+        </section>
 
-      {/* Berechnete Felder */}
-      <div className="text-gray-600 text-sm">
-        <p>🐶 Senior: {is_senior ? "Ja" : "Nein"}</p>
-        <p>🐾 Welpe: {is_puppy ? "Ja" : "Nein"}</p>
+        {/* RECHTS */}
+        <section className="space-y-4">
+          <Field 
+            label="EU-Heimtierausweis" 
+            name="passport_number" 
+            value={formData.passport_number}
+            onChange={handleChange} 
+          />
+          <Field 
+            label="Geburtsdatum" 
+            name="birth_date" 
+            type="date" 
+            value={formData.birth_date}
+            error={errors.birth_date}
+            onChange={handleChange} 
+          />
+        </section>
+        </div>
+
+        <h2>Erkennungsmerkmale</h2>
+
+        {/* ZWEI SPALTEN */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LINKS */}
+        <section className="space-y-4">
+          <Select
+            label="Geschlecht"
+            name="gender"
+            options={{ Female: "Weiblich", Male: "Männlich" }}
+            value={formData.gender}
+            onChange={handleChange}
+          />
+          <Field 
+            label="Schulterhöhe (cm)" 
+            name="height_cm" 
+            type="number" 
+            value={formData.height_cm ?? ""}
+            error={errors.height_cm}
+            onChange={handleChange} 
+          />
+          <Field 
+            label="Gewicht (kg)" 
+            name="weight_kg" 
+            type="number" 
+            value={formData.weight_kg ?? ""}
+            error={errors.weight_kg}
+            onChange={handleChange} 
+          />
+
+        </section>
+        {/* RECHTS */}
+        <section className="space-y-4">
+          <Textarea 
+            label="Farbe" 
+            name="color"
+            value={formData.color} 
+            error={errors.color}
+            onChange={handleChange} 
+          />
+          <Textarea 
+            label="Besondere Merkmale" 
+            name="unique_features" 
+            value={formData.unique_features} 
+            onChange={handleChange} 
+          />
+        </section>
       </div>
 
-      <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+      <h2>Angaben zum Charakter</h2>
+
+        {/* ZWEI SPALTEN */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LINKS */}
+        <section className="space-y-4">
+          <Checkbox 
+            name="is_house_trained" 
+            label="Bisher stubenrein?" 
+            checked={formData.is_house_trained}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_good_with_kids" 
+            label="Verträglich mit Kindern?" 
+            checked={formData.is_good_with_kids}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_good_with_males" 
+            label="Verträglich mit Rüden?" 
+            checked={formData.is_good_with_males}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_good_with_females" 
+            label="Verträglich mit Hündinnen?" 
+            checked={formData.is_good_with_females}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_good_with_cats" 
+            label="Verträglich mit Katzen?" 
+            checked={formData.is_good_with_cats}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_good_with_other_animals" 
+            label="Verträglich mit anderen Tieren?" 
+            checked={formData.is_good_with_other_animals}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="needs_garden" 
+            label="Wird ein Garten benötigt?" 
+            checked={formData.needs_garden}
+            onChange={handleChange}
+          />
+        </section>
+        {/* RECHTS */}
+        <section className="space-y-4">
+          <Checkbox 
+            name="needs_experienced_owner" 
+            label="Nur an hundeerfahrene Personen vermittelbar?" 
+            checked={formData.needs_experienced_owner}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="guarding_instinct" 
+            label="Hütetrieb vorhanden?" 
+            checked={formData.guarding_instinct}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="hunting_instinct" 
+            label="Jagdtrieb vorhanden?" 
+            checked={formData.hunting_instinct}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="can_live_in_city" 
+            label="Stadttauglich?" 
+            checked={formData.can_live_in_city}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="transport_tolerant" 
+            label="Verträgt Autofahrten?" 
+            checked={formData.transport_tolerant}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="can_climb_stairs" 
+            label="Kann Treppen steigen?" 
+            checked={formData.can_climb_stairs}
+            onChange={handleChange}
+          />
+          <Select
+            label="Energielevel"
+            name="energy_level"
+            value={formData.energy_level}
+            options={{ Low: "Niedrig", Medium: "Mittel", High: "Hoch" }}
+            onChange={handleChange}
+          />
+        </section>
+      </div>
+
+      <h2>Medizinische Informationen</h2>
+      {/* ZWEI SPALTEN */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LINKS */}
+        <section className="space-y-4">
+          <Checkbox 
+            name="neutered" 
+            label="Kastriert" 
+            checked={formData.neutered}
+            error={errors.neutered}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="vaccinated" 
+            label="Geimpft" 
+            checked={formData.vaccinated}
+            error={errors.vaccinated}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="has_illnesses" 
+            label="Hat bekannte Krankheiten" 
+            checked={formData.has_illnesses}
+            onChange={handleChange}
+          />
+          {formData.has_illnesses && (
+            <>
+              <Textarea
+                label="Beschreibung der Krankheiten"
+                name="illness_description"
+                value={formData.illness_description}
+                onChange={handleChange}
+              />
+
+              <Checkbox
+                name="treatment_costs_covered"
+                label="Behandlungskosten werden vom Verein getragen"
+                checked={formData.treatment_costs_covered}
+                onChange={handleChange}
+              />
+            </>
+          )}
+
+          </section>
+        {/* RECHTS */}
+        <section className="space-y-4">
+          <Checkbox 
+            name="has_handicap" 
+            label="Hat der Hund eine bekannte körperliche Einschränkung?" 
+            checked={formData.has_handicap}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_blind" 
+            label="Ist der Hund blind?" 
+            checked={formData.is_blind}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="is_deaf" 
+            label="Ist der Hund taub?" 
+            checked={formData.is_deaf}
+            onChange={handleChange}
+          />
+        </section>
+      </div>
+
+      <h2>Vermittlungsstatus</h2>
+     {/* ZWEI SPALTEN */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LINKS */}
+        <section className="space-y-4">
+          <Checkbox 
+            name="available_for_adoption" 
+            label="Aktuell zur Vermittlung freigegeben?" 
+            checked={formData.available_for_adoption}
+            error={errors.available_for_adoption}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="available_as_foster" 
+            label="Als Pflegehund mit Option zur Adoption verfügbar?" 
+            checked={formData.available_as_foster}
+            onChange={handleChange}
+          />
+          <Checkbox 
+            name="looking_for_sponsorship" 
+            label="Sucht Patenschaft?" 
+            checked={formData.looking_for_sponsorship}
+            onChange={handleChange}
+          />
+        </section>
+        {/* RECHTS */}
+        <section className="space-y-4">
+          
+        </section>
+      </div>
+
+
+      <h2>Verein & Aufenthaltsort</h2>
+      {/* ZWEI SPALTEN */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* LINKS */}
+        <section className="space-y-4">
+          <Field 
+            label="Land. in dem sich der Hund aktuell befindet" 
+            name="current_country" 
+            value={formData.current_country}
+            onChange={handleChange} 
+          />
+          <Select
+            label="Art der aktuellen Unterkunft"
+            name="current_location_type"
+            value={formData.current_location_type}
+            options={{ KillShelter: "Tötungsstation", Shelter: "Tierheim", FosterAbroad: "Pflegestelle", FosterGermany: "Pflegestelle Deutschland", Adopted: "Adoptiert"   }}
+            onChange={handleChange}
+          />
+          <Field 
+            label="Angaben zur aktuellen Unterkunft" 
+            name="current_location_description"
+            value={formData.current_location_description} 
+            onChange={handleChange} 
+          />
+        </section>
+
+        {/* RECHTS */}
+        <section className="space-y-4">
+          <Field 
+            label="Tierschutzverein" 
+            name="shelter_org_name" 
+            value={formData.shelter_org_name}
+            error={errors.shelter_org_name}
+            onChange={handleChange}
+          />
+          <Field 
+            label="Vermittler:in" 
+            name="case_manager_name"
+            value={formData.case_manager_name}
+            error={errors.case_manager_name}
+            onChange={handleChange} 
+          />
+          <Field 
+            label="E-Mail Vermittler:in" 
+            name="case_manager_email" 
+            value={formData.case_manager_email}
+            error={errors.case_manager_email}
+            onChange={handleChange} 
+          />
+        </section>
+      </div>
+
+
+      <button
+        disabled={Object.keys(errors).length > 0}
+        className="px-8 py-3 bg-black text-white rounded-lg disabled:opacity-50">
         Speichern
       </button>
+
     </form>
   );
 }
+
+/* ---------- HELFER ---------- */
+
+function Field({ label, name, value, onChange, error, ...rest }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <input
+        name={name}
+        value={value}
+        onChange={onChange}
+        {...rest}
+        className={`w-full border p-2 rounded ${
+          error ? "border-red-500" : ""
+        }`}
+      />
+      {error && <p className="text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+
+function Textarea({ label, name, value, onChange, ...rest }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        {...rest}
+        className="w-full border p-2 rounded"
+      />
+    </div>
+  );
+}
+
+function Select({ label, name, value, options, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full border p-2 rounded"
+      >
+        <option value="">Bitte wählen</option>
+        {Object.entries(options).map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function Checkbox({ name, label, checked, onChange }) {
+  return (
+    <label className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        name={name}
+        checked={checked}
+        onChange={onChange}
+      />
+      {label}
+    </label>
+  );
+}
+

@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from db import get_session
 from models.home_checker import HomeChecker
 
-home_checkers_bp = Blueprint("home_checkers", __name__, url_prefix="/api/home_checkers")
+home_checkers_bp = Blueprint("home_checkers", __name__)
 
 @home_checkers_bp.route("/home_checkers", methods=["POST"])
 def create_checker():
