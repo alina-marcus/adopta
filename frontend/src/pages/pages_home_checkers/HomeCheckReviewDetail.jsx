@@ -44,7 +44,7 @@ export default function HomeCheckReviewDetail() {
 
     const documents = {
         application: {
-            label: "Bewerbung ansehen",
+            label: "Interessentenbogen ansehen",
             url: "/documents/bewerbung-bina.pdf",
         },
         homecheck: {
@@ -146,6 +146,15 @@ export default function HomeCheckReviewDetail() {
 
                             <tr>
                                 <td className="text-left px-4 py-3 font-medium">
+                                    Tierschutzverein
+                                </td>
+                                <td className="text-left px-4 py-3">
+                                    Hundeliebe Grenzenlos e.V.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td className="text-left px-4 py-3 font-medium">
                                     Ansprechpartner:in
                                 </td>
                                 <td className="text-left px-4 py-3">
@@ -190,7 +199,7 @@ export default function HomeCheckReviewDetail() {
                             </tr>
                             <tr>
                                 <td className="text-left px-4 py-3 font-medium">
-                                    Bewerbung
+                                    Interessentenbogen
                                 </td>
                                 <td className="px-4 py-3">
                                     <a
@@ -226,7 +235,7 @@ export default function HomeCheckReviewDetail() {
 
                 {/* To-Dos */}
                 <section className="space-y-4">
-                    <h2 className="text-xl font-semibold">To-Dos</h2>
+                    <h2 className="text-xl font-semibold">So geht es weiter</h2>
                     <div className="text-left ">
                         <p>Danke, dass du die Vorkontrolle übernimmst! Bitte mach als nächstes Folgendes: </p>
                         <ol>
@@ -263,7 +272,7 @@ export default function HomeCheckReviewDetail() {
                         Absage an Tierschutzverein senden
                     </button>
                 </section>
-            </div>
+            </div>   
         </main>
     );
 }

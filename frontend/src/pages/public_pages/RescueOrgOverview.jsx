@@ -56,7 +56,7 @@ export default function RescueOrgOverview() {
           </li>
           <li>
             <h3 className="font-semibold">Vor- und Nachkontrollen finden</h3>
-            <p>Per Knopfdruck</p>
+            <p>Deutschlandweites Netzwerk an Vor- und Nachkontrolleur:innen</p>
           </li>
           <li>
             <h3 className="font-semibold">Besser informierte Interessenten</h3>
