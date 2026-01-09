@@ -27,6 +27,7 @@ import TermsAndConditions from './pages/public_pages/TermsAndConditions';
 // Rescue Org Pages
 import RescueOrgDash from './pages/pages_rescue_orgs/RescueOrgDash';
 import AddDog from './pages/pages_rescue_orgs/AddDog';
+import EditDog from './pages/pages_rescue_orgs/AddDog';
 import MyDogs from './pages/pages_rescue_orgs/MyDogs';
 import DogProfile from './pages/pages_rescue_orgs/DogProfile';
 import ReviewApplication from './pages/pages_rescue_orgs/ReviewApplication';
@@ -65,6 +66,7 @@ function App() {
         {/* Rescue orgs */}
         <Route path="/tsv/ueberblick" element={<RescueOrgDash />} />
         <Route path="/tsv/hinzufuegen" element={<AddDog />} />
+        <Route path="/tsv/bearbeiten" element={<EditDog />} />
         <Route path="/tsv/meine-hunde" element={<MyDogs />} />
         <Route path="/tsv/hund/:id" element={<DogProfile />} />
         <Route path="/tsv/bewerbung-pruefen" element={<ReviewApplication />} />

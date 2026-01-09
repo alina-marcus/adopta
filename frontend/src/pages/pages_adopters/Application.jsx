@@ -110,11 +110,19 @@ export default function AdoptionForm() {
   const nextStep = () => setStep((s) => Math.min(s + 1, 6));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("🐶 Adoptionsformular JSON:", formData);
-    alert("Hello David! More data to post to thr API");
+
+    const response = await fetch("http://localhost:5001/api/applications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await response.json();
+    navigate(`/applications/${result.id}`);
   };
+
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-6">
@@ -418,6 +426,7 @@ export default function AdoptionForm() {
           ) : (
             <button
               type="submit"
+              onClick={handleSubmit}
               className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-lg"
             >
               Formular abschließen

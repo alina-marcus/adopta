@@ -21,15 +21,16 @@ export default function Navbar() {
 
           {/* Desktop Links (right) */}
           <div className="hidden md:flex md:items-center md:space-x-8 text-xl">
+            <Link to="/adoptanten" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
+              Hunde zur Adoption
+            </Link>
             <Link to="/tierschutzvereine" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
-              Tierschutzvereine
+              Für Tierschutzvereine
             </Link>
             <Link to="/ehrenamt-im-tierschutz" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
-              Vor- und Nachkontrolleur:innen
+              Für Vor- und Nachkontrolleur:innen
             </Link>
-            <Link to="/adoptanten" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
-              Adoptanten
-            </Link>
+
             <Link to="/kontakt" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
               Login
             </Link>
@@ -52,15 +53,16 @@ export default function Navbar() {
       {/* Mobile menu (collapsible) */}
       {isOpen && (
         <div id="mobile-menu" className="md:hidden px-4 pb-4 bg-[#FFD8B3] space-y-2 font-caveat">
+          <Link to="/adoptanten" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
+            Hunde
+          </Link>
           <Link to="/tierschutzvereine" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
             Tierschutzvereine
           </Link>
           <Link to="/ehrenamt-im-tierschutz" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
             Vor- und Nachkontrolleur:innen
           </Link>
-          <Link to="/adoptanten" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
-            Adoptanten
-          </Link>
+
         </div>
       )}
     </nav>

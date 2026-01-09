@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="text-[#1E1E1E] font-sans">
       {/* Hero Section */}
-      <section className="py-20 text-center">
+      <section className="py-20 text-center bg-[url('/Users/alinamarcus/adopta/frontend/src/assets/dog_snout.jpg')] ">
         <h1 className="text-5xl font-extrabold mb-4">Adopta</h1>
         <p className="text-lg max-w-2xl mx-auto mb-6">
           Ein transparenter, sicherer und einfacher Adoptionsprozess - für Tierschutzvereine, Interessenten und Pflegestellen.

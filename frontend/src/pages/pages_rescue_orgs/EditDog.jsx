@@ -123,7 +123,7 @@ export default function DogForm() {
       onSubmit={handleSubmit}
       className="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow space-y-8"
     >
-      <h1 className="text-3xl font-bold">Hund hinzufügen</h1>
+      <h1 className="text-3xl font-bold">Hund bearbeiten</h1>
 
       {/* FOTO */}
       <section>
