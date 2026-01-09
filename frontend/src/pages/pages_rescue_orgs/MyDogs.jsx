@@ -19,8 +19,38 @@ const dogs = [
     imageUrl: "https://hips.hearstapps.com/hmg-prod/images/best-small-dog-breeds-chihuahua-1598967884.jpg?crop=0.449xw:0.842xh;0.245xw,0.0337xh",
   },
 ];
+  
 
 export default function MyDogs() {
+
+  const { id } = useParams();
+  const [dogs, setDogs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+useEffect(() => {
+    async function loadDogs() {
+      try {
+        const res = await fetch(`http://localhost:5001/dogs`);
+        const data = await res.json();
+        setDogs(data);
+      } catch (err) {
+        console.error("Fehler beim Laden der Hunde:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDogs();
+  }, [id]);
+
+  if (loading) {
+    return <div className="p-6 pt-24 text-center">Lade Hunde…</div>;
+  }
+
+  if (!dogs) {
+    return <div className="p-6 pt-24 text-center">Hunde nicht gefunden</div>;
+  }
+
   return (
     <>
       {/* Main heading */}

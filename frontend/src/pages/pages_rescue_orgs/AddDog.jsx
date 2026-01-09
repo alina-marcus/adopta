@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function DogForm() {
   const [formData, setFormData] = useState({
     dog_name: "",
+    image:"/image/dog1.png",
     chip_number: "",
     passport_number: "",
     gender: "",
@@ -100,23 +101,31 @@ export default function DogForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validate()) return;
+    console.log(formData);
 
-    const data = new FormData();
-    if (imageFile) data.append("image", imageFile);
-    data.append("data", JSON.stringify(formData));
+    // if (!validate()) return;
 
-    await fetch("http://localhost:5001/dogs", {
+    try {
+    const response = await fetch("http://localhost:5001/dogs", {
       method: "POST",
-      body: data,
+      headers: {"Content-type" : "application/json"},
+      body: JSON.stringify(formData),
     });
 
       const result = await response.json();
 
-      navigate(`/dogs/${result.id}`);
-    alert("Hund gespeichert");
+      if (response.ok) {
+        // navigate(`/dogs/${result.id}`);
+        alert("Hund gespeichert");
+      } 
+    }
+    catch(err) {
+      console.log('failed to add dog,', err)
+    }
   };
+  
 
+ 
 
   return (
     <form
@@ -125,7 +134,7 @@ export default function DogForm() {
     >
       <h1 className="text-3xl font-bold">Hund hinzufügen</h1>
 
-      {/* FOTO */}
+      {/* FOTO 
       <section>
         <label className="block font-semibold mb-1">Profilfoto</label>
         <input
@@ -134,6 +143,7 @@ export default function DogForm() {
           onChange={(e) => setImageFile(e.target.files[0])}
         />
       </section>
+        */}
 
       <h2>Grunddaten</h2>
 
@@ -436,9 +446,16 @@ export default function DogForm() {
             label="Art der aktuellen Unterkunft"
             name="current_location_type"
             value={formData.current_location_type}
-            options={{ KillShelter: "Tötungsstation", Shelter: "Tierheim", FosterAbroad: "Pflegestelle", FosterGermany: "Pflegestelle Deutschland", Adopted: "Adoptiert"   }}
+            options={{
+              "Tötungsstation": "Tötungsstation",
+              "Tierheim": "Tierheim",
+              "Pflegestelle im Ausland": "Pflegestelle im Ausland",
+              "Pflegestelle Deutschland": "Pflegestelle Deutschland",
+              "Adoptiert": "Adoptiert"
+            }}
             onChange={handleChange}
           />
+
           <Field 
             label="Zusätzliche Details zur aktuellen Unterkunft" 
             name="current_location_description"

@@ -4,7 +4,7 @@ export default function RescueOrgDash() {
             <h1>Activity</h1>
 
             <div className="flex flex-wrap gap-2">
-                <Button pill>All</Button>
+                <Button pill>Alle</Button>
                 <Button pill>Applications</Button>
                 <Button pill>Pre-Checks</Button>
                 <Button pill>Post-Checks</Button>
