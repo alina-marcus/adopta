@@ -56,9 +56,7 @@ export default function HomeCheckReviewDetail() {
     return (
         <main className="min-h-screen flex flex-col items-center px-4 space-y-8">
             <div className="w-full max-w-2xl space-y-8">
-                <h1 className="text-2xl font-bold text-center">
-                    Vorkontrolle für Bina
-                </h1>
+                <h1>Vorkontrolle für Bina</h1>
 
                 {/* Tabelle */}
                 <div className="overflow-x-auto">

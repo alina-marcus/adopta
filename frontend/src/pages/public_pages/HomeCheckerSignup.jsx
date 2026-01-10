@@ -50,9 +50,7 @@ export default function HomeCheckerSignup() {
 
   return (
     <main className="max-w-xl mx-auto px-6 py-10 text-black">
-      <h1 className="text-3xl font-bold mb-6">
-        Anmeldung als Vor- und Nachkontrolleur:in
-      </h1>
+      <h1>Anmeldung als Vor- und Nachkontrolleur:in</h1>
 
       {success && (
         <p className="mb-4">

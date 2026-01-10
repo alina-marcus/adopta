@@ -18,9 +18,7 @@ export default function HomeCheckReview() {
     return (
         <main className="min-h-screen flex items-center justify-center px-4">
             <div className="w-full max-w-2xl space-y-6">
-                <h1 className="text-2xl font-bold text-center">
-                    Vorkontrolle gesucht!
-                </h1>
+                <h1>Vorkontrolle gesucht!</h1>
 
                 <div className="overflow-x-auto">
                     <table className="w-full border border-white rounded-lg">

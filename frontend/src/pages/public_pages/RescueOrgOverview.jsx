@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function RescueOrgOverview() {
   return (
     <main className="px-6 py-8">
-      <h1 className="text-3xl font-bold mb-4 text-center">Zeit sparen für deinen Tierschutzverein</h1>
+      <h1>Zeit sparen für deinen Tierschutzverein</h1>
       <p className="text-center max-w-2xl mx-auto mb-6">
         Tierschutzvereinsarbeit war noch nie so einfach. Mit Adopta sparst du Zeit, Nerven und deine Schützlinge finden sicher das richtige Zuhause.
       </p>
@@ -37,29 +37,29 @@ export default function RescueOrgOverview() {
 
       {/* Funktionen */}
       <section className="max-w-4xl mx-auto mb-16">
-        <h2 className="text-2xl font-bold mb-6 text-center">Diese Funktionen bietet Adopta</h2>
+        <h2>Diese Funktionen bietet Adopta</h2>
         <ul className="space-y-4">
           <li>
-            <h3 className="font-semibold">Mitgliederverwaltung</h3>
+            <h3>Mitgliederverwaltung</h3>
             <p>Mitglieder hinzufügen, entfernen, Hunden zuweisen.</p>
           </li>
           <li>
-            <h3 className="font-semibold">Verwaltung von Hunden in der Vermittlung</h3>
+            <h3>Verwaltung von Hunden in der Vermittlung</h3>
             <p>Hunde hinzufügen, bearbeiten, entfernen, Profile inklusive Updates teilen, Mitgliedern zuweisen.</p>
           </li>
           <li>
-            <h3 className="font-semibold">Interessentenbogen versenden</h3>
+            <h3>Interessentenbogen versenden</h3>
             <p>
               Standardisierte Online-Formulare, die sich leicht am PC, Tablet oder Handy öffnen und ausfüllen lassen.
               Kein Hin und Her per WhatsApp, E-Mail und Messenger mehr, alle Daten werden DSGVO-konform gespeichert und lassen sich leicht abrufen.
             </p>
           </li>
           <li>
-            <h3 className="font-semibold">Vor- und Nachkontrollen finden</h3>
+            <h3>Vor- und Nachkontrollen finden</h3>
             <p>Deutschlandweites Netzwerk an Vor- und Nachkontrolleur:innen</p>
           </li>
           <li>
-            <h3 className="font-semibold">Besser informierte Interessenten</h3>
+            <h3>Besser informierte Interessenten</h3>
             <p>lorem ipsum</p>
           </li>
         </ul>

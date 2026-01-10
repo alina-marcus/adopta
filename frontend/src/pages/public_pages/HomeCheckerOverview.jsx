@@ -5,7 +5,7 @@ export default function HomeCheckerOverview() {
     <main className="px-6 py-10 max-w-4xl mx-auto text-black">
       {/* Header */}
       <header className="mb-10">
-        <h1 className="text-4xl font-bold mb-4">
+        <h1>
           Vor- und Nachkontrolleur:innen
         </h1>
         <p className="text-lg">
@@ -18,7 +18,7 @@ export default function HomeCheckerOverview() {
 
       {/* What is it */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-3">
+        <h2>
           Was ist eine Vor- und Nachkontrolle?
         </h2>
         <p className="mb-3">
@@ -36,7 +36,7 @@ export default function HomeCheckerOverview() {
 
       {/* Process */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-3">Dein Ablauf als Kontrolleur:in</h2>
+        <h2>Dein Ablauf als Kontrolleur:in</h2>
         <ol className="list-decimal list-inside space-y-2">
           <li>Du erhältst eine Anfrage über Adopta.</li>
           <li>Du siehst die Angaben aus dem Adoptionsantrag.</li>
@@ -53,7 +53,7 @@ export default function HomeCheckerOverview() {
 
       {/* Why volunteer */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-3">
+        <h2>
           Warum Vor- und Nachkontrollen so wichtig sind
         </h2>
         <ul className="list-disc list-inside space-y-2">
@@ -66,7 +66,7 @@ export default function HomeCheckerOverview() {
 
       {/* CTA */}
             <section className="border-t pt-8 text-center">
-              <h2 className="text-2xl font-semibold mb-3">
+              <h2>
                 Möchtest du helfen?
               </h2>
               <p className="mb-6">

@@ -3,32 +3,37 @@ import { Link } from "react-router-dom";
 import FooterLoggedOut from "../../components/footers/FooterLoggedOut.jsx";
 
 export default function AdoptersOverview() {
-  const [dogs, setDogs] = useState([]);
+const [dogs, setDogs] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("http://localhost:5001/api/dogs/public")
-      .then((res) => res.json())
-      .then((data) => {
+  
+useEffect(() => {
+    async function loadDogs() {
+      try {
+        const res = await fetch(`http://localhost:5001/dogs`);
+        const data = await res.json();
         setDogs(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Fehler beim Laden der Hunde:", err);
+      } finally {
         setLoading(false);
-      });
-  }, []);
+      }
+    }
+
+    loadDogs();
+  },[]);
 
   if (loading) {
-    return <p className="p-6">Lade Hunde…</p>;
+    return <div className="p-6 pt-24 text-center">Lade Hunde…</div>;
+  }
+
+  if (!dogs) {
+    return <div className="p-6 pt-24 text-center">Hunde nicht gefunden</div>;
   }
 
   return (
     <>
       {/* Main heading */}
-      <h1 className="text-3xl font-bold mb-6">
-        Hund aus dem Tierschutz adoptieren
-      </h1>
+      <h1>Hund aus dem Tierschutz adoptieren</h1>
 
       {/* Search bar (UI only for now) */}
       <div className="mb-8">

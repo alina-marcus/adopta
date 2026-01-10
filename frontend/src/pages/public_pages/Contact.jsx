@@ -2,7 +2,7 @@ export default function Contact() {
   return (
     
     <div className="max-w-3xl mx-auto py-16 px-6">
-      <h1 className="text-3xl font-bold mb-6">Kontakt</h1>
+      <h1>Kontakt</h1>
       <p className="mb-8 text-gray-700">
         Du hast Fragen oder brauchst Unterstützung?  
         Schreib uns einfach eine Nachricht – wir melden uns so schnell wie möglich.

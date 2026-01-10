@@ -13,12 +13,26 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Caveat Brush', cursive;
+h1 {
+  padding-top: 15px;
+  margin-bottom: 1rem; 
+  font-size: 1.875rem;
+  line-height: 2.25rem; 
+  font-weight: 700; 
+  text-align: center;   
 }
 
-.font-caveat {
-  font-family: 'Caveat Brush', cursive;
+h2 {
+margin-bottom: 2.5rem; 
+font-size: 1.875rem;
+line-height: 2.25rem; 
+font-weight: 700; 
+}
+
+h3 {
+  margin-bottom: 0.5rem; 
+  font-weight: 600; 
+  color: #fa6a02;
 }
 
 

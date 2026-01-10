@@ -126,7 +126,7 @@ export default function AdoptionForm() {
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-6">
-      <h1 className="text-2xl font-bold mb-4 text-center">
+      <h1>
         Adoptionsformular – Schritt {step} von 6
       </h1>
 

@@ -7,7 +7,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="bg-[#FFD8B3] border-b border-[#fa6a02] font-caveat"
+      className="border-b border-[#fa6a02]"
       aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
