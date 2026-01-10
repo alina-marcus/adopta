@@ -1,29 +1,10 @@
 import DogCard from "../../components/DogCard.jsx";
 import FooterLoggedOut from "../../components/footers/FooterLoggedOut.jsx";
-
-const dogs = [
-  {
-    id: 1,
-    name: "Pip",
-    location: "Spain",
-    housing: "Shelter",
-    applications: 0,
-    imageUrl: "https://hips.hearstapps.com/hmg-prod/images/small-dogs-norwich-terrier-6626b4b68616b.jpg?crop=0.532xw:0.916xh;0.162xw,0",
-  },
-  {
-    id: 2,
-    name: "Luna",
-    location: "Köln",
-    housing: "Foster home",
-    applications: 2,
-    imageUrl: "https://hips.hearstapps.com/hmg-prod/images/best-small-dog-breeds-chihuahua-1598967884.jpg?crop=0.449xw:0.842xh;0.245xw,0.0337xh",
-  },
-];
+import { useEffect, useState } from "react";
   
 
 export default function MyDogs() {
 
-  const { id } = useParams();
   const [dogs, setDogs] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -41,7 +22,7 @@ useEffect(() => {
     }
 
     loadDogs();
-  }, [id]);
+  },[]);
 
   if (loading) {
     return <div className="p-6 pt-24 text-center">Lade Hunde…</div>;

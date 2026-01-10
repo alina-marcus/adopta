@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function DogForm() {
   const [formData, setFormData] = useState({
     dog_name: "",
+    rescue_org_id: 1,
     image:"/image/dog1.png",
     chip_number: "",
     passport_number: "",
@@ -12,11 +13,11 @@ export default function DogForm() {
     height_cm: null,
     weight_kg: null,
     color: "",
+    breed:"",
     unique_features: "",
     illness_description: "",
     energy_level: "",
     additional_notes: "",
-    shelter_org_name: "",
     case_manager_name: "",
     case_manager_email: "",
     current_country: "",
@@ -42,7 +43,6 @@ export default function DogForm() {
     hunting_instinct: false,
     can_live_in_city: false,
     transport_tolerant: false,
-    training_needed: false,
     available_for_adoption: false,
     available_as_foster: false,
     looking_for_sponsorship: false,
@@ -224,6 +224,12 @@ export default function DogForm() {
             name="color"
             value={formData.color} 
             error={errors.color}
+            onChange={handleChange} 
+          />
+          <Textarea 
+            label="Rasse" 
+            name="breed"
+            value={formData.breed} 
             onChange={handleChange} 
           />
           <Textarea 

@@ -1,4 +1,13 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Boolean,
+    Text,
+    Date,
+    ForeignKey,
+)
+
 from sqlalchemy.orm import relationship
 from db import Base
 
@@ -12,3 +21,11 @@ class Application(Base):
     adopter = relationship("Adopter", back_populates="applications")
     dog = relationship("Dog", back_populates="applications")
     home_checks = relationship("HomeCheck", back_populates="application")
+
+    # Beziehungen
+    dogs = relationship(
+        "Dog",
+        back_populates="dogs",
+        cascade="all, delete-orphan",
+        foreign_keys="Dog.applications_id"
+    )

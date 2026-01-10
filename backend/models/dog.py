@@ -5,10 +5,10 @@ from sqlalchemy import (
     Boolean,
     Text,
     Date,
+    ForeignKey,
 )
 from sqlalchemy.orm import relationship
 from db import Base
-
 
 class Dog(Base):
     __tablename__ = "dogs"
@@ -29,6 +29,7 @@ class Dog(Base):
     gender = Column(String(10))  # Male / Female
     birth_date = Column(Date, nullable=True)
 
+    breed = Column(String(100), nullable=True)
     height_cm = Column(Integer)
     weight_kg = Column(Integer)
 
@@ -84,8 +85,6 @@ class Dog(Base):
 
     # Organisation & Kontakt
 
-    shelter_org_name = Column(String(100))
-
     case_manager_name = Column(String(100))
     case_manager_email = Column(String(100))
 
@@ -101,17 +100,19 @@ class Dog(Base):
 
     # Beziehungen
 
-    applications = relationship(
-        "Application",
-        back_populates="dog",
-        cascade="all, delete-orphan"
+    rescue_org_id = Column(Integer, ForeignKey("rescue_orgs.id"))
+    rescue_orgs = relationship(
+        "RescueOrganization",
+        back_populates="dogs"
     )
 
-    # updates = relationship(
-    #    "DogUpdate",
-    #    back_populates="dog",
-    #    cascade="all, delete-orphan"
-    #)
+    application_id = Column(Integer, ForeignKey("applications.id"))
+    applications = relationship(
+        "Application",
+        back_populates="dogs",
+        cascade="all, delete-orphan",
+        foreign_keys="[Application.dog_id]"
+    )
 
     # Abgeleitete Eigenschaften
     #

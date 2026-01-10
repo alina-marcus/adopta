@@ -4,7 +4,7 @@ from db import Base
 
 
 class RescueOrganization(Base):
-    __tablename__ = "rescue_organizations"
+    __tablename__ = "rescue_orgs"
 
     # Primärschlüssel
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -38,3 +38,11 @@ class RescueOrganization(Base):
     bank_info = Column(Text)
     notes = Column(Text)
     description = Column(Text)
+
+    # Beziehungen
+    dogs = relationship(
+        "Dog",
+        back_populates="rescue_org",
+        cascade="all, delete-orphan",
+        foreign_keys="Dog.rescue_orgs_id"
+    )
