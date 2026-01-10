@@ -18,14 +18,11 @@ class Application(Base):
     dog_id = Column(Integer, ForeignKey("dogs.id"))
     status = Column(String(20), default="PENDING")
 
+    # Beziehungen
     adopter = relationship("Adopter", back_populates="applications")
     dog = relationship("Dog", back_populates="applications")
-    home_checks = relationship("HomeCheck", back_populates="application")
-
-    # Beziehungen
-    dogs = relationship(
-        "Dog",
-        back_populates="dogs",
-        cascade="all, delete-orphan",
-        foreign_keys="Dog.applications_id"
+    home_checks = relationship(
+        "HomeCheck",
+        back_populates="application",
+        cascade="all, delete-orphan"
     )

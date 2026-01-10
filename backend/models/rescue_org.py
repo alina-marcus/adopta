@@ -43,6 +43,5 @@ class RescueOrganization(Base):
     dogs = relationship(
         "Dog",
         back_populates="rescue_org",
-        cascade="all, delete-orphan",
-        foreign_keys="Dog.rescue_orgs_id"
+        cascade="all, delete-orphan"
     )

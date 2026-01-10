@@ -101,17 +101,16 @@ class Dog(Base):
     # Beziehungen
 
     rescue_org_id = Column(Integer, ForeignKey("rescue_orgs.id"))
-    rescue_orgs = relationship(
+    rescue_org = relationship(
         "RescueOrganization",
         back_populates="dogs"
     )
 
-    application_id = Column(Integer, ForeignKey("applications.id"))
     applications = relationship(
         "Application",
-        back_populates="dogs",
+        back_populates="dog",
         cascade="all, delete-orphan",
-        foreign_keys="[Application.dog_id]"
+        foreign_keys="Application.dog_id"
     )
 
     # Abgeleitete Eigenschaften

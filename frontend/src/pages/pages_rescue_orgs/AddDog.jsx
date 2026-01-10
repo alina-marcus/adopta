@@ -55,7 +55,6 @@ export default function DogForm() {
     "height_cm",
     "weight_kg",
     "color",
-    "shelter_org_name",
     "case_manager_name",
     "case_manager_email",
   ]
@@ -472,13 +471,17 @@ export default function DogForm() {
 
         {/* RECHTS */}
         <section className="space-y-4">
-          <Field 
-            label="Tierschutzverein" 
-            name="shelter_org_name" 
-            value={formData.shelter_org_name}
-            error={errors.shelter_org_name}
+          <Select
+            label="Tierschutzverein"
+            name="rescue_org_id"
+            value={formData.rescue_org_id}
+            options={{
+              1: "Tierhilfe Rumänien e.V.",
+              2: "Pfotenfreunde Spanien",
+            }}
             onChange={handleChange}
           />
+
           <Field 
             label="Vermittler:in" 
             name="case_manager_name"
