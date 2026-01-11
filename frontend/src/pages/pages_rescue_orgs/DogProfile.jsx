@@ -67,6 +67,10 @@ export default function DogProfile() {
     async function loadDog() {
       try {
         const res = await fetch(`http://localhost:5001/dogs/${id}`);
+        if (!res.ok) {
+          setDog(null);
+          return;
+        }
         const data = await res.json();
         setDog(data);
       } catch (err) {
@@ -114,12 +118,12 @@ export default function DogProfile() {
 
       {/* Aktionen */}
       <div className="flex gap-4 mb-10">
-        <Link to={`/dogs/${dog.id}/edit`}>
-          <button className="px-6 py-3 rounded-xl font-semibold shadow bg-gray-200 hover:bg-gray-300">
+        <Link to={`/tsv/hund/${dog.id}/bearbeiten`}>
+          <button class="button-primary">
             Bearbeiten
           </button>
         </Link>
-        <button className="px-4 py-2 rounded-md bg-[#3C9A6B] text-white hover:bg-[#2f7752]">
+        <button class="button-primary">
           Teilen
         </button>
       </div>

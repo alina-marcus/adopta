@@ -114,8 +114,9 @@ export default function DogForm() {
       const result = await response.json();
 
       if (response.ok) {
-        // navigate(`/dogs/${result.id}`);
+    
         alert("Hund gespeichert");
+        navigate(`/dogs/${id}`);
       } 
     }
     catch(err) {
@@ -131,7 +132,7 @@ export default function DogForm() {
       onSubmit={handleSubmit}
       className="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow space-y-8"
     >
-      <h1 className="text-3xl font-bold">Hund hinzufügen</h1>
+      <h1>Hund hinzufügen</h1>
 
       {/* FOTO 
       <section>
@@ -502,7 +503,7 @@ export default function DogForm() {
 
       <button
         disabled={Object.keys(errors).length > 0}
-        className="px-8 py-3 bg-black text-white rounded-lg disabled:opacity-50">
+        class="button-primary">
         Speichern
       </button>
 
