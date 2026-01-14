@@ -503,7 +503,7 @@ export default function DogForm() {
 
       <button
         disabled={Object.keys(errors).length > 0}
-        class="button-primary">
+        className="button-primary">
         Speichern
       </button>
 

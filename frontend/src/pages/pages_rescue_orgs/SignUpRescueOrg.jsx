@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpRescueOrg() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     org_name: "",
-    ansprechpartner: "",
-    email: "",
-    telefon: "",
-    adresse: "",
-    plz: "",
-    ort: "",
+    contact_name: "",
+    contact_email: "",
+    contact_phone: "",
+    address_line: "",
+    postal_code: "",
+    city: "",
     website: "",
-    gruendungsjahr: "",
-    mitgliederzahl: "",
-    beschreibung: "",
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -20,38 +21,33 @@ export default function SignUpRescueOrg() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const url = "http://localhost:5001/rescue-organizations";
-console.log(formData);
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch("http://localhost:5001/rescue-organizations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          is_nonprofit: true,
+          has_animal_protection_license: false,
+        }),
+      });
 
-    console.log("Rescue org submit triggered");
+      if (!res.ok) {
+        throw new Error(`Response ${res.status}`);
+      }
 
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+      await res.json();
+
+      alert("Rescue organization successfully registered");
+      navigate("/tsv/meine-hunde");
+    } catch (err) {
+      console.error(err);
+      alert("Error while saving rescue organization");
     }
-
-    const result = await response.json();
-    console.log("Backend response:", result);
-
-    // Optional: Success Handling
-    // navigate("/dashboard");
-    // setFormData(initialState);
-
-  } catch (error) {
-    console.error("Submit error:", error.message);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
@@ -61,180 +57,44 @@ console.log(formData);
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="org_name" className="block font-semibold mb-1">
-              Vereinsname
-            </label>
-            <input
-              type="text"
-              id="org_name"
-              name="org_name"
-              value={formData.org_name}
-              onChange={handleChange}
-              required
-              className="w-full border rounded-lg px-3 py-2"
-            />
-          </div>
+          <Input label="Vereinsname" name="org_name" value={formData.org_name} onChange={handleChange} />
+          <Input label="Ansprechpartner" name="contact_name" value={formData.contact_name} onChange={handleChange} />
+          <Input label="E-Mail" type="email" name="contact_email" value={formData.contact_email} onChange={handleChange} />
+          <Input label="Telefonnummer" name="contact_phone" value={formData.contact_phone} onChange={handleChange} />
+          <Input label="Adresse" name="address_line" value={formData.address_line} onChange={handleChange} />
+          <Input label="PLZ" name="postal_code" value={formData.postal_code} onChange={handleChange} />
+          <Input label="Ort" name="city" value={formData.city} onChange={handleChange} />
+          <Input label="Webseite" name="website" value={formData.website} onChange={handleChange} />
 
           <div>
-            <label htmlFor="ansprechpartner" className="block font-semibold mb-1">
-              Ansprechpartner
-            </label>
-            <input
-              type="text"
-              id="ansprechpartner"
-              name="ansprechpartner"
-              value={formData.ansprechpartner}
-              onChange={handleChange}
-              required
-              className="w-full border rounded-lg px-3 py-2"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="email" className="block font-semibold mb-1">
-                E-Mail
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full border rounded-lg px-3 py-2"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="telefon" className="block font-semibold mb-1">
-                Telefonnummer
-              </label>
-              <input
-                type="tel"
-                id="telefon"
-                name="telefon"
-                value={formData.telefon}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="adresse" className="block font-semibold mb-1">
-              Adresse
-            </label>
-            <input
-              type="text"
-              id="adresse"
-              name="adresse"
-              value={formData.adresse}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label htmlFor="plz" className="block font-semibold mb-1">
-                PLZ
-              </label>
-              <input
-                type="text"
-                id="plz"
-                name="plz"
-                value={formData.plz}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="ort" className="block font-semibold mb-1">
-                Ort
-              </label>
-              <input
-                type="text"
-                id="ort"
-                name="ort"
-                value={formData.ort}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="website" className="block font-semibold mb-1">
-              Webseite
-            </label>
-            <input
-              type="url"
-              id="website"
-              name="website"
-              value={formData.website}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="gruendungsjahr" className="block font-semibold mb-1">
-                Gründungsjahr
-              </label>
-              <input
-                type="number"
-                id="gruendungsjahr"
-                name="gruendungsjahr"
-                value={formData.gruendungsjahr}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="mitgliederzahl" className="block font-semibold mb-1">
-                Mitgliederzahl
-              </label>
-              <input
-                type="number"
-                id="mitgliederzahl"
-                name="mitgliederzahl"
-                value={formData.mitgliederzahl}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="beschreibung" className="block font-semibold mb-1">
-              Kurzbeschreibung
-            </label>
+            <label className="block font-semibold mb-1">Kurzbeschreibung</label>
             <textarea
-              id="beschreibung"
-              name="beschreibung"
+              name="description"
               rows={4}
-              value={formData.beschreibung}
+              value={formData.description}
               onChange={handleChange}
-              placeholder="Beschreibe kurz den Zweck und die Aktivitäten des Vereins..."
               className="w-full border rounded-lg px-3 py-2"
-            ></textarea>
+            />
           </div>
 
-          <div className="pt-4 text-center">
-            <button
-              type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow"
-            >
-              Jetzt registrieren
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded-lg"
+          >
+            Jetzt registrieren
+          </button>
         </form>
       </div>
+    </div>
+  );
+}
+
+/* ---------- HELPER ---------- */
+function Input({ label, ...props }) {
+  return (
+    <div>
+      <label className="block font-semibold mb-1">{label}</label>
+      <input {...props} className="w-full border rounded-lg px-3 py-2" />
     </div>
   );
 }

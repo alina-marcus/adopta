@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import FooterLoggedOut from "../../components/footers/FooterLoggedOut.jsx";
 
 export default function AdoptersOverview() {
-const [dogs, setDogs] = useState(null);
+  const [dogs, setDogs] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-useEffect(() => {
+
+  useEffect(() => {
     async function loadDogs() {
       try {
-        const res = await fetch(`http://localhost:5001/dogs`);
+        const res = await fetch("http://localhost:5001/dogs");
         const data = await res.json();
         setDogs(data);
       } catch (err) {
@@ -20,7 +20,7 @@ useEffect(() => {
     }
 
     loadDogs();
-  },[]);
+  }, []);
 
   if (loading) {
     return <div className="p-6 pt-24 text-center">Lade Hunde…</div>;
@@ -32,59 +32,62 @@ useEffect(() => {
 
   return (
     <>
-      {/* Main heading */}
       <h1>Hund aus dem Tierschutz adoptieren</h1>
 
-      {/* Search bar (UI only for now) */}
-      <div className="mb-8">
+      {/* Suche */}
+      <div className="flex justify-center mb-10">
         <input
           type="text"
-          placeholder="Suche…"
-          className="w-full max-w-md px-4 py-2 border rounded-md"
+          placeholder="Nach Namen oder Ort suchen…"
+          className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
         />
       </div>
 
-      {/* Filter + Result count */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex gap-2">
-          <button className="px-4 py-2 border rounded-md">
-            Filtern
-          </button>
-          <button className="px-4 py-2 border rounded-md">
-            Sortieren
-          </button>
+      {/* Filter / Count */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <div className="flex gap-3">
+          <button className="button-secondary">Filtern</button>
+          <button className="button-secondary">Sortieren</button>
         </div>
-        <p className="text-gray-600">{dogs.length} Ergebnisse</p>
+        <p className="text-gray-500">{dogs.length} Hunde gefunden</p>
       </div>
 
-      {/* Dogs grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      {/* GRID */}
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-16">
         {dogs.map((dog) => (
           <div
             key={dog.id}
-            className="border rounded-lg overflow-hidden bg-white"
+            className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition"
           >
-            <img
-              src={dog.profile_image_url}
-              alt={dog.dog_name}
-              className="w-full h-56 object-cover"
-            />
+            {/* Bild */}
+            <div className="relative h-56 overflow-hidden">
+              <img
+                src={
+                  dog.profile_image_url ||
+                  "https://images.unsplash.com/photo-1558788353-f76d92427f16"
+                }
+                alt={dog.dog_name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
 
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-1">
-                {dog.dog_name}
-              </h2>
+            {/* Inhalt */}
+            <div className="p-5 flex flex-col gap-3">
+              <h2 className="text-xl font-semibold">{dog.name}</h2>
 
-              <p className="text-gray-600 mb-4">
-                {dog.current_location_type} · {dog.current_country}
+              <p className="text-sm text-gray-500">
+                {dog.current_location_type || "Auf Pflegestelle"} ·{" "}
+                {dog.current_country || "Unbekannt"}
               </p>
 
-              <Link
-                to={`/dogs/${dog.id}`}
-                className="inline-block px-4 py-2 border rounded-md hover:bg-black hover:text-white transition"
-              >
-                Ansehen
-              </Link>
+              <div className="mt-3">
+                <Link
+                  to={`/tsv/hund/${dog.id}`}
+                  className="inline-block button-primary text-sm"
+                >
+                  Profil ansehen
+                </Link>
+              </div>
             </div>
           </div>
         ))}

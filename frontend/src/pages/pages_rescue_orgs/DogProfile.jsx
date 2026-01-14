@@ -119,11 +119,11 @@ export default function DogProfile() {
       {/* Aktionen */}
       <div className="flex gap-4 mb-10">
         <Link to={`/tsv/hund/${dog.id}/bearbeiten`}>
-          <button class="button-primary">
+          <button className="button-primary">
             Bearbeiten
           </button>
         </Link>
-        <button class="button-primary">
+        <button className="button-primary">
           Teilen
         </button>
       </div>

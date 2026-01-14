@@ -56,46 +56,72 @@ export default function EditDog() {
     looking_for_sponsorship: false,
   });
 
+
   /* ---------- DATEN LADEN ---------- */
-  useEffect(() => {
-    async function loadDog() {
-      try {
-        const res = await fetch(`http://localhost:5001/dogs/${id}`);
-        if (!res.ok) throw new Error("Hund nicht gefunden");
+useEffect(() => {
+  async function loadDog() {
+    try {
+      const res = await fetch(`http://localhost:5001/dogs/${id}`);
+      if (!res.ok) throw new Error("Hund nicht gefunden");
 
-        const data = await res.json();
+      const data = await res.json();
 
-        setFormData((prev) => ({
-          ...prev,
-          ...data, // nur vorhandene Keys überschreiben
-        }));
-      } catch (err) {
-        console.error(err);
-        alert("Hund konnte nicht geladen werden");
-      } finally {
-        setLoading(false);
+      // Nur erlaubte Keys übernehmen
+      const allowedKeys = Object.keys(formData);
+      const cleanedData = {};
+
+      for (const key of allowedKeys) {
+        if (key in data) cleanedData[key] = data[key];
       }
+
+      // Date-Fix für <input type="date">
+    if (cleanedData.birth_date) {
+    const date = new Date(cleanedData.birth_date);
+
+    if (!isNaN(date)) {
+        cleanedData.birth_date = date.toISOString().split("T")[0];
+    } else {
+        cleanedData.birth_date = "";
+    }
     }
 
-    loadDog();
-  }, [id]);
+
+      setFormData((prev) => ({
+        ...prev,
+        ...cleanedData,
+      }));
+    } catch (err) {
+      console.error(err);
+      alert("Hund konnte nicht geladen werden");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  loadDog();
+}, [id]);
+
+
 
   /* ---------- HANDLER ---------- */
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+const handleChange = (e) => {
+  const { name, value, type, checked } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : type === "number"
-          ? value === ""
-            ? ""
-            : Number(value)
-          : value,
-    }));
-  };
+  setFormData((prev) => ({
+    ...prev,
+    [name]:
+      type === "checkbox"
+        ? checked
+        : name === "rescue_org_id"
+        ? Number(value)
+        : type === "number"
+        ? value === ""
+          ? ""
+          : Number(value)
+        : value,
+  }));
+};
+
 
   /* ---------- VALIDIERUNG ---------- */
   const REQUIRED_FIELDS = [
@@ -370,7 +396,6 @@ export default function EditDog() {
             name="neutered"
             label="Kastriert"
             checked={formData.neutered}
-            error={errors.neutered}
             onChange={handleChange}
           />
           <Checkbox
@@ -523,3 +548,75 @@ export default function EditDog() {
     </form>
   );
 }
+
+/* ---------- HELFER ---------- */
+
+function Field({ label, name, value, onChange, error, ...rest }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <input
+        name={name}
+        value={value}
+        onChange={onChange}
+        {...rest}
+        className={`w-full border p-2 rounded ${
+          error ? "border-red-500" : ""
+        }`}
+      />
+      {error && <p className="text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+
+function Textarea({ label, name, value, onChange, ...rest }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        {...rest}
+        className="w-full border p-2 rounded"
+      />
+    </div>
+  );
+}
+
+function Select({ label, name, value, options, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full border p-2 rounded"
+      >
+        <option value="">Bitte wählen</option>
+        {Object.entries(options).map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function Checkbox({ name, label, checked, onChange }) {
+  return (
+    <label className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        name={name}
+        checked={checked}
+        onChange={onChange}
+      />
+      {label}
+    </label>
+  );
+}
+

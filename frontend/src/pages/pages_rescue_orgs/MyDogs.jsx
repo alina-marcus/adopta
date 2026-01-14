@@ -1,6 +1,7 @@
 import DogCard from "../../components/DogCard.jsx";
 import FooterLoggedOut from "../../components/footers/FooterLoggedOut.jsx";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
   
 
 export default function MyDogs() {
@@ -50,19 +51,22 @@ useEffect(() => {
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <div className="flex gap-2">
           <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
-            Filter
+            Filtern
           </button>
           <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
-            Sort
+            Sortieren
           </button>
         </div>
-        <p className="text-gray-600">{dogs.length} results</p>
+        <p className="text-gray-600">{dogs.length} Ergebnisse</p>
       </div>
 
       {/* Page header + Add New */}
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold">My Dogs</h2>
-        <button className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#fa6a02] text-white font-medium shadow hover:bg-[#a34502] transition">
+        <h2 className="text-2xl font-bold">Übersicht</h2>
+        <Link
+          to="/tsv/hinzufuegen"
+          className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#fa6a02] text-white font-medium shadow hover:bg-[#a34502] transition"
+        >
           {/* Plus icon */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,10 +76,14 @@ useEffect(() => {
             stroke="currentColor"
             className="w-5 h-5"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
           </svg>
-          Add New
-        </button>
+          Hinzufügen
+        </Link>
       </div>
 
       {/* Dogs grid */}
