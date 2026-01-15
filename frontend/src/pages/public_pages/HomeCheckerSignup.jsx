@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeCheckerSignup() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ export default function HomeCheckerSignup() {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -17,7 +19,10 @@ export default function HomeCheckerSignup() {
       ...prev,
       [name]: value,
     }));
+
   }
+
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -32,11 +37,11 @@ export default function HomeCheckerSignup() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error("Fehler beim Absenden des Formulars");
-      }
+      const result = await response.json();
 
-      setSuccess(true);
+      alert("Registrierung erfolgreich");
+      navigate(`/vor-und-nachkontrollen/${result.id}`);
+
       setFormData({
         first_name: "",
         last_name: "",
@@ -49,7 +54,7 @@ export default function HomeCheckerSignup() {
   }
 
   return (
-    <main className="max-w-xl mx-auto px-6 py-10 text-black">
+    <main className="max-w-xl mx-auto px-6 py-10">
       <h1>Anmeldung als Vor- und Nachkontrolleur:in</h1>
 
       {success && (

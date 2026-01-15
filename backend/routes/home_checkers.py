@@ -27,3 +27,4 @@ def list_checkers():
         {"id": c.id, "first_name": c.first_name, "last_name": c.last_name, "email": c.email}
         for c in checkers
     ])
+

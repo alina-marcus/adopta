@@ -74,9 +74,9 @@ function App() {
         <Route path="/tsv/bewerbung-pruefen" element={<ReviewApplication />} />
 
         {/* Home checkers */}
-        <Route path="/vor-und-nachkontrollen" element={<HomeCheckerDash />} />
-        <Route path="/vor-und-nachkontrollen/:id" element={<HomeCheckReview />} />
-        <Route path="/vor-und-nachkontrollen/detail/" element={<HomeCheckReviewDetail />} />
+        <Route path="/vor-und-nachkontrollen/:id" element={<HomeCheckerDash />} />
+        <Route path="/vor-und-nachkontrollen/:id/kontrolle/:id" element={<HomeCheckReview />} />
+        <Route path="/vor-und-nachkontrollen/:id/kontrolle/:id/detail" element={<HomeCheckReviewDetail />} />
 
         {/* Adopters */}
         <Route path="/bewerbung" element={<Application />} />

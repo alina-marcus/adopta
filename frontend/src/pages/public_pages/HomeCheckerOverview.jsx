@@ -77,7 +77,7 @@ export default function HomeCheckerOverview() {
 
               <Link
                 to="/ehrenamt-im-tierschutz/registrieren"
-                className="inline-block px-6 py-3 rounded-lg border border-black hover:bg-black hover:text-white transition"
+                className="button-primary"
               >
                 Als Vor- und Nachkontrolleur:in anmelden
               </Link>

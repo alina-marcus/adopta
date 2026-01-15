@@ -1,7 +1,7 @@
 export default function HomeCheckerDash() {
     return (
         <main>
-            <h1>Aktivität</h1>
+            <h1>Aufgaben</h1>
 
                 {/* Filter + Sort bar */}
                 <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
