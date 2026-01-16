@@ -7,6 +7,8 @@ class HomeCheck(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     application_id = Column(Integer, ForeignKey("applications.id"))
     checker_id = Column(Integer, ForeignKey("home_checkers.id"))
+    check_type = Column(String) # pre | post
+    status = Column(Boolean)
     check_date = Column(Date)
     control_passed = Column(Boolean)
     placement_recommendation = Column(String(100))

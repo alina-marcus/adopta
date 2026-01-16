@@ -76,8 +76,8 @@ export default function AdoptersOverview() {
               <h2 className="text-xl font-semibold">{dog.name}</h2>
 
               <p className="text-sm text-gray-500">
-                {dog.current_location_type || "Auf Pflegestelle"} ·{" "}
-                {dog.current_country || "Unbekannt"}
+                {dog.current_location_type || "Auf Pflegestelle"} |{" "}
+                {dog.breed || "Unbekannt"}
               </p>
 
               <div className="mt-3">

@@ -126,6 +126,11 @@ export default function DogProfile() {
         <button className="button-primary">
           Teilen
         </button>
+        <Link to={`/bewerbung/${dog.id}`}>
+          <button className="button-primary">
+            Anfrage für {dog.dog_name} senden
+          </button>
+        </Link>
       </div>
 
       {/* Dynamische Tabelle */}

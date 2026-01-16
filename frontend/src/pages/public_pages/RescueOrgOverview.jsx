@@ -11,7 +11,7 @@ export default function RescueOrgOverview() {
       <div className="text-center mb-12">
         <Link
           to="/tierschutzvereine/registrieren" 
-          className="inline-block px-6 py-3 rounded-xl font-semibold shadow bg-[#fa6a02] hover:bg-[#a34502] text-white"
+          className="button-primary"
         >
           Jetzt anmelden
         </Link>

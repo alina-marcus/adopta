@@ -79,7 +79,7 @@ function App() {
         <Route path="/vor-und-nachkontrollen/:id/kontrolle/:id/detail" element={<HomeCheckReviewDetail />} />
 
         {/* Adopters */}
-        <Route path="/bewerbung" element={<Application />} />
+        <Route path="/bewerbung/:id" element={<Application />} />
       </Routes>
       </>
   );

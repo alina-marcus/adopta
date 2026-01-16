@@ -14,8 +14,13 @@ export default function Home() {
               Ein transparenter, sicherer und einfacher Adoptionsprozess - für Tierschutzvereine, Interessenten und Pflegestellen.
             </p>
         </div>
-        <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-            <img src="https://www.petsmont.com/blogs/pets/common-issues-with-a-dog-snout?srsltid=AfmBOoqQRDe80VCOfjPcP6Kt3Ufy13SS9g4sbBR94sBb6lRcwlX7TQNt" alt="dog snout"/>
+        <div class="hidden lg:relative lg:col-span-5 lg:flex">
+            <img 
+              src="https://images.unsplash.com/photo-1526660161685-d28d9e74aa55" 
+              alt="dog snout"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/20 to-transparent" />
         </div>                
     </div>
 </section>
@@ -23,17 +28,17 @@ export default function Home() {
         {/* Button container with flex */}
         <div className="flex justify-center gap-4">
           <Link to="/tierschutzvereine">
-            <button className="px-6 py-3 rounded-xl font-semibold shadow hover:bg-[#a34502]">
+            <button className="button-secondary">
               Für Tierschutzvereine
             </button>
           </Link>
           <Link to="/adoptanten">
-            <button className="px-6 py-3 rounded-xl font-semibold shadow hover:bg-[#a34502]">
+            <button className="button-secondary">
               Hunde suchen
             </button>
           </Link>
           <Link to="/ehrenamt-im-tierschutz">
-            <button className="px-6 py-3 rounded-xl font-semibold shadow hover:bg-[#a34502]">
+            <button className="button-secondary">
               Vor- und Nachkontrolleur:in werden
             </button>
           </Link>

@@ -1,48 +1,145 @@
-export default function HomeCheckerDash() {
-    return (
-        <main>
-            <h1>Aufgaben</h1>
+import { useEffect, useMemo, useState } from "react";
 
-                {/* Filter + Sort bar */}
-                <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-                    <div className="flex gap-2">
-                    <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
-                        Alle
-                    </button>
-                    <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
-                        Vorkontrollen
-                    </button>
-                     <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
-                        Nachkontrollen
-                    </button>
-                    </div>
+export default function HomeCheckerDash() {
+  const [calls, setCalls] = useState([]);
+  const [filter, setFilter] = useState("all"); // all | pre | post
+  const [loading, setLoading] = useState(true);
+
+  // Mock data for home checker
+  const homeChecker = {
+    postal_code: "12051",
+    city: "Berlin",
+  };
+
+  useEffect(() => {
+    async function loadCalls() {
+      const res = await fetch("http://localhost:5001/home-check-calls");
+      const data = await res.json();
+      setCalls(data);
+      setLoading(false);
+    }
+
+    loadCalls();
+  }, []);
+
+  function daysAgo(dateString) {
+    const created = new Date(dateString);
+    const now = new Date();
+    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "heute";
+    if (diffDays === 1) return "gestern";
+    return `vor ${diffDays} Tagen`;
+  }
+
+  function isExpired(call) {
+    const created = new Date(call.created_at);
+    const now = new Date();
+    const diffDays = (now - created) / (1000 * 60 * 60 * 24);
+    return diffDays > 3 || call.status !== "open";
+  }
+
+  // FILTERN + SORTIEREN
+  const visibleCalls = useMemo(() => {
+    return calls
+      .filter(
+        (c) =>
+          c.dog.postal_code === homeChecker.postal_code &&
+          c.dog.city === homeChecker.city
+      )
+      .filter((c) => (filter === "all" ? true : c.type === filter))
+      .sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+  }, [calls, filter]);
+
+  if (loading) {
+    return <p className="text-center mt-10">Lade Aufgaben…</p>;
+  }
+
+  return (
+    <main className="max-w-5xl mx-auto px-6 py-10">
+      <h1>Aufgaben</h1>
+
+      {/* FILTER */}
+      <div className="flex gap-2 mb-8">
+        {[
+          { key: "all", label: "Alle" },
+          { key: "pre", label: "Vorkontrollen" },
+          { key: "post", label: "Nachkontrollen" },
+        ].map((btn) => (
+          <button
+            key={btn.key}
+            onClick={() => setFilter(btn.key)}
+            className={`px-4 py-2 rounded-md transition ${
+              filter === btn.key
+                ? "bg-black text-white"
+                : "bg-gray-200 hover:bg-gray-300"
+            }`}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
+
+      {/* LISTE */}
+      <ul className="space-y-4">
+        {visibleCalls.map((call) => {
+          const expired = isExpired(call);
+
+          return (
+            <li
+              key={call.id}
+              className={`flex items-center gap-4 p-4 rounded-xl border transition ${
+                expired
+                  ? "bg-gray-100 opacity-50"
+                  : "bg-white hover:shadow-md"
+              }`}
+            >
+              {/* FOTO */}
+              <img
+                src={call.dog.image_url}
+                alt={call.dog.name}
+                className="w-16 h-16 rounded-full object-cover"
+              />
+
+              {/* TEXT */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3">
+                  <p className="font-semibold">
+                    {call.type === "pre"
+                      ? "Vorkontrolle gesucht"
+                      : "Nachkontrolle gesucht"}
+                  </p>
+                  <span className="text-sm text-gray-500">
+                    {daysAgo(call.created_at)}
+                  </span>
                 </div>
 
-                {/* Activities list */}
+                <p className="text-gray-600">
+                  {call.dog.postal_code} {call.dog.city}
+                </p>
+              </div>
 
-                <ul>
-                    <li>
-                        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-                            <img src="" />
-                            <div>
-                                <p>Vorkontrolle gesucht</p>
-                                <p>heute</p>
-                            </div>
-                            <div>
-                                <span>Standort: 12051 Berlin</span>
-                            </div>
-                            <button className="px-4 py-2 rounded-md bg-black text-white hover:bg-gray-300 transition">Ansehen</button>
-                        </div>
-                    </li>
-                    <li>
-                        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-                            <img src="" />
-                            <span>Nachkontrolle gesucht</span>
-                            <span>Standort: 12051 Berlin</span>
-                            <button className="px-4 py-2 rounded-md bg-black text-white hover:bg-gray-300 transition">Ansehen</button>
-                        </div>
-                    </li>
-                </ul>
-        </main>
-    )
+              {/* BUTTON */}
+              <button
+                disabled={expired}
+                className={`button-primary ${
+                  expired ? "cursor-not-allowed bg-gray-400" : ""
+                }`}
+              >
+                {expired ? "abgelaufen" : "Ansehen"}
+              </button>
+            </li>
+          );
+        })}
+
+        {visibleCalls.length === 0 && (
+          <p className="text-center text-gray-500">
+            Aktuell keine passenden Aufgaben
+          </p>
+        )}
+      </ul>
+    </main>
+  );
 }
