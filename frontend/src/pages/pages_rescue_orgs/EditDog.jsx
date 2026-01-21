@@ -176,6 +176,30 @@ const handleChange = (e) => {
     return <p className="text-center mt-10">Lade Hundedaten…</p>;
   }
 
+    /* ---------- DELETE ---------- */
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      `Möchtest du ${formData.dog_name} wirklich endgültig löschen?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:5001/dogs/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Löschen fehlgeschlagen");
+
+      alert("Hund wurde gelöscht");
+      navigate("/tsv/meine-hunde");
+    } catch (err) {
+      console.error(err);
+      alert("Fehler beim Löschen des Hundes");
+    }
+  };
+
+
   /* ---------- RENDER ---------- */
   return (
     <form
@@ -545,6 +569,21 @@ const handleChange = (e) => {
       </div>
 
       <button className="button-primary">Änderungen speichern</button>
+
+            {/* ---------- LÖSCHEN ---------- */}
+      <section className="mt-12 pt-6 border-t border-gray-300">
+        <p className="mb-4 text-gray-700">
+          Du möchtest <strong>{formData.dog_name}</strong> löschen? Klicke hier.
+        </p>
+
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="button-primary"
+        >
+          Löschen
+        </button>
+      </section>
     </form>
   );
 }

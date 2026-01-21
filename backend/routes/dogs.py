@@ -144,3 +144,20 @@ def update_dog(dog_id):
     session.commit()
 
     return jsonify(to_dict(dog)), 200
+
+# -------------------------
+# DELETE
+# -------------------------
+@dogs_bp.route("/dogs/<int:dog_id>", methods=["DELETE"])
+def delete_dog(dog_id):
+    session = get_session()
+    dog = session.query(Dog).get(dog_id)
+
+    if not dog:
+        return jsonify({"error": "Dog not found"}), 404
+
+    session.delete(dog)
+    session.commit()
+
+    return jsonify({"message": "Dog deleted"}), 200
+

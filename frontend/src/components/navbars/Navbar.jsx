@@ -31,7 +31,7 @@ export default function Navbar() {
               Für Vor- und Nachkontrolleur:innen
             </Link>
 
-            <Link to="/kontakt" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
+            <Link to="/" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
               Login
             </Link>
           </div>

@@ -116,7 +116,7 @@ export default function DogForm() {
       if (response.ok) {
     
         alert("Hund gespeichert");
-        navigate(`/dogs/${id}`);
+        navigate(`/tsv/hund/${id}`);
       } 
     }
     catch(err) {
@@ -503,7 +503,8 @@ export default function DogForm() {
 
       <button
         disabled={Object.keys(errors).length > 0}
-        className="button-primary">
+        className="button-primary"
+        navigate>
         Speichern
       </button>
 

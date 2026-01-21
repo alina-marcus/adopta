@@ -1,3 +1,4 @@
+@reference "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,11 +7,10 @@
 /* BASE */
 /* -------------------- */
 @layer base {
-  @reference utilities;
 
   body {
     font-weight: 400;
-
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color-scheme: light dark;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -29,18 +29,33 @@
   h3 {
     @apply mb-2 font-medium text-[#fa6a02];
   }
+
+  /* ---------- TEXT LINKS ---------- */
+  /* Nur Links im Fließtext */
+  p a {
+    @apply underline underline-offset-2;
+  }
+
+  /* Optional: Hover etwas stärker */
+  p a:hover {
+    @apply opacity-80;
+  }
 }
+
+  a:not(p a) {
+    text-decoration: none;
+  }
+
 
 /* -------------------- */
 /* COMPONENTS */
 /* -------------------- */
 @layer components {
-  @reference utilities;
 
   /* ---------- BUTTONS ---------- */
 
   .button-primary {
-    @apply px-8 py-3 rounded-lg bg-black text-white transition;
+    @apply px-8 py-3 rounded-lg bg-black text-white transition cursor-pointer;
   }
 
   .button-primary:hover {
@@ -48,7 +63,7 @@
   }
 
   .button-secondary {
-    @apply px-8 py-3 rounded-lg bg-white text-black border border-black transition;
+    @apply px-8 py-3 rounded-lg bg-white text-black border border-black transition cursor-pointer;
   }
 
   .button-secondary:hover {
@@ -59,12 +74,12 @@
 
   .pill-primary {
     @apply px-5 py-2 rounded-full bg-black text-white font-medium
-           transition hover:bg-gray-700;
+           transition hover:bg-gray-700 cursor-pointer;
   }
 
   .pill-secondary {
     @apply px-5 py-2 rounded-full bg-white text-black font-medium
-           border border-black transition
+           border border-black transition cursor-pointer
            hover:bg-black hover:text-white;
   }
 

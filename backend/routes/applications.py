@@ -4,7 +4,7 @@ from models.application import Application
 from models.adopter import Adopter
 from models.dog import Dog
 
-applications_bp = Blueprint("applications", __name__, url_prefix="/api/applications")
+applications_bp = Blueprint("applications", __name__)
 
 @applications_bp.route("/applications", methods=["POST"])
 def create_application():

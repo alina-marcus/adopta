@@ -57,7 +57,7 @@ function App() {
         <Route path="/tierschutzvereine/registrieren" element={<SignUpRescueOrg />} />
         <Route path="/ehrenamt-im-tierschutz" element={<HomeCheckerOverview />} />
         <Route path="/ehrenamt-im-tierschutz/registrieren" element={<HomeCheckerSignup />} />
-        <Route path="/adoptanten" element={<AdoptersOverview />} />
+        <Route path="/hunde" element={<AdoptersOverview />} />
         <Route path="/kontakt" element={<Contact />} />
         <Route path="/impressum" element={<Imprint />} />
         <Route path="/datenschutz" element={<DataProtection />} />

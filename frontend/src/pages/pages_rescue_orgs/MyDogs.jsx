@@ -42,7 +42,7 @@ useEffect(() => {
       <div className="mb-8">
         <input
           type="text"
-          placeholder="Search dogs..."
+          placeholder="Hunde suchen..."
           className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fa6a02]"
         />
       </div>
@@ -50,10 +50,10 @@ useEffect(() => {
       {/* Filter + Sort bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <div className="flex gap-2">
-          <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
+          <button className="pill-secondary">
             Filtern
           </button>
-          <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition">
+          <button className="pill-secondary">
             Sortieren
           </button>
         </div>
@@ -65,7 +65,7 @@ useEffect(() => {
         <h2 className="text-2xl font-bold">Übersicht</h2>
         <Link
           to="/tsv/hinzufuegen"
-          className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#fa6a02] text-white font-medium shadow hover:bg-[#a34502] transition"
+          className="flex items-center gap-2 px-5 py-2 button-primary"
         >
           {/* Plus icon */}
           <svg
