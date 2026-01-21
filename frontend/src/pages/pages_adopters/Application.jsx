@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 
 /* ---------- Helper Components ---------- */
 
@@ -35,13 +37,37 @@ const Checkbox = ({ label, name, checked, onChange }) => (
   </label>
 );
 
+const Select = ({ label, name, value, options, onChange }) => (
+  <div className="space-y-1">
+    <label className="text-sm font-medium">{label}</label>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="border p-2 rounded w-full"
+    >
+      <option value="">Bitte wählen</option>
+      {Object.entries(options).map(([val, label]) => (
+        <option key={val} value={val}>
+          {label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+
+
+
 /* ---------- Main Component ---------- */
 
 export default function AdoptionForm() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const { dogId } = useParams();
 
   const [formData, setFormData] = useState({
+    dog_id: Number(dogId),
     first_name: "",
     last_name: "",
     email_address: "",
@@ -142,16 +168,29 @@ export default function AdoptionForm() {
   const nextStep = () => setStep((s) => Math.min(s + 1, 6));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
     const res = await fetch("http://localhost:5001/applications", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text);
+    }
+
     const result = await res.json();
     navigate(`/applications/${result.id}`);
-  };
+  } catch (err) {
+    console.error("Submit fehlgeschlagen:", err);
+    alert("Bewerbung konnte nicht abgeschickt werden.");
+  }
+};
+
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow">
@@ -221,10 +260,10 @@ export default function AdoptionForm() {
               options={{ Miete: "Miete", Eigentum: "Eigentum" }}
               onChange={handleChange}
             />
-            {formData.owned_or_rented === Miete && (
+            {formData.owned_or_rented === "Miete" && (
               <Field label="Tierhaltung erlaubt (Miete)" name="pet_permission_if_rented" value={formData.pet_permission_if_rented} onChange={handleChange} />
             )}
-            {formData.owned_or_rented === Eigentum && ( 
+            {formData.owned_or_rented === "Eigentum" && ( 
                 <Field label="Tierhaltung erlaubt (Eigentum)" name="pet_permission_if_owned" value={formData.pet_permission_if_owned} onChange={handleChange} />
             )} 
              <Checkbox label="Umzug geplant" name="planning_to_move" checked={formData.planning_to_move} onChange={handleChange} />
@@ -249,7 +288,12 @@ export default function AdoptionForm() {
         {step === 4 && (
           <section className="space-y-6">
             <h2>Tiererfahrung</h2>
-            <Checkbox label="Tiere im Haushalt" name="pets_in_household" value={formData.pets_in_household} onChange={handleChange} />
+            <Field
+              label="Welche Tiere leben aktuell im Haushalt?"
+              name="pets_in_household"
+              value={formData.pets_in_household}
+              onChange={handleChange}
+            />
             {formData.pets_in_household && (
               <>
                 <Field label="Tierart" name="pet_type" value={formData.pet_type} onChange={handleChange} />
@@ -324,7 +368,14 @@ export default function AdoptionForm() {
         <div className="flex justify-between pt-6">
           {step > 1 && <button type="button" onClick={prevStep} className="button-secondary">Zurück</button>}
           {step < 6 ? (
-            <button type="button" onClick={nextStep} className="button-primary">Weiter</button>
+            <button
+              type="button"
+              onClick={nextStep}
+              className="button-primary"
+            >
+              Weiter
+            </button>
+
           ) : (
             <button type="submit" className="button-primary">Absenden</button>
           )}

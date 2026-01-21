@@ -21,7 +21,7 @@ export default function Navbar() {
 
           {/* Desktop Links (right) */}
           <div className="hidden md:flex md:items-center md:space-x-8 text-xl">
-            <Link to="/adoptanten" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
+            <Link to="/hunde" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
               Hunde zur Adoption
             </Link>
             <Link to="/tierschutzvereine" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
