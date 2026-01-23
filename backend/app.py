@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from db import Base, engine
-from routes.adopters import adopters_bp
 from routes.dogs import dogs_bp
 from routes.applications import applications_bp
 from routes.home_checkers import home_checkers_bp
@@ -17,7 +16,6 @@ Base.metadata.create_all(engine)
 def home_string():
     return "adopta api"
 # Register Blueprints
-app.register_blueprint(adopters_bp)
 app.register_blueprint(dogs_bp)
 app.register_blueprint(applications_bp)
 app.register_blueprint(home_checkers_bp)

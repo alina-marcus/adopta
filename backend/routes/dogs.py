@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from sqlalchemy.inspection import inspect
 
+
 from db import get_session
 from models.dog import Dog
 
@@ -25,6 +26,13 @@ def to_dict(obj):
 def create_dog():
     session = get_session()
     data = request.get_json()
+    # --- FIX: birth_date String -> Python date (or None) ---
+    if "birth_date" in data:
+        if data["birth_date"] in (None, "", "null"):
+            data["birth_date"] = None
+        else:
+            # erwartet "YYYY-MM-DD"
+            data["birth_date"] = datetime.strptime(data["birth_date"], "%Y-%m-%d").date()
 
     if data.get("birth_date"):
         data["birth_date"] = datetime.strptime(
@@ -132,14 +140,14 @@ def update_dog(dog_id):
 
     for field in UPDATABLE_FIELDS:
         if field in data:
-            if field == "birth_date" and data[field]:
-                setattr(
-                    dog,
-                    field,
-                    datetime.strptime(data[field], "%Y-%m-%d").date()
-                )
+            if field == "birth_date":
+                if data[field] in (None, "", "null"):
+                    setattr(dog, field, None)
+                else:
+                    setattr(dog, field, datetime.strptime(data[field], "%Y-%m-%d").date())
             else:
                 setattr(dog, field, data[field])
+
 
     session.commit()
 
