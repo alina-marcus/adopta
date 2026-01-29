@@ -28,16 +28,13 @@ def create_dog():
     data = request.get_json()
     # --- FIX: birth_date String -> Python date (or None) ---
     if "birth_date" in data:
+        print(data.get("birth_date"))
+        print(type(data.get("birth_date")))
         if data["birth_date"] in (None, "", "null"):
             data["birth_date"] = None
         else:
             # erwartet "YYYY-MM-DD"
             data["birth_date"] = datetime.strptime(data["birth_date"], "%Y-%m-%d").date()
-
-    if data.get("birth_date"):
-        data["birth_date"] = datetime.strptime(
-            data["birth_date"], "%Y-%m-%d"
-        ).date()
 
     dog = Dog(**data)
     session.add(dog)
