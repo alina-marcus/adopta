@@ -1,6 +1,7 @@
 // src/Navbar.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import InternalNavRescueOrg from "./InternalNavRescueOrg.jsx";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,22 +22,30 @@ export default function Navbar() {
 
           {/* Desktop Links (right) */}
           <div className="hidden md:flex md:items-center md:space-x-8 text-xl">
-            <Link to="/hunde" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
+            <Link
+              to="/hunde"
+              className="text-[#4A2F1B] hover:text-[#fa6a02] transition"
+            >
               Hunde zur Adoption
             </Link>
-            <Link to="/tierschutzvereine" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
+            <Link
+              to="/tierschutzvereine"
+              className="text-[#4A2F1B] hover:text-[#fa6a02] transition"
+            >
               Für Tierschutzvereine
             </Link>
-            <Link to="/ehrenamt-im-tierschutz" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
+            <Link
+              to="/ehrenamt-im-tierschutz"
+              className="text-[#4A2F1B] hover:text-[#fa6a02] transition"
+            >
               Für Vor- und Nachkontrolleur:innen
             </Link>
 
-            <Link to="/" className="text-[#4A2F1B] hover:text-[#fa6a02] transition">
-              Login
-            </Link>
+            {/* 🔥 Burger Menu */}
+            <InternalNavRescueOrg />
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile Bamburger */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -52,17 +61,28 @@ export default function Navbar() {
 
       {/* Mobile menu (collapsible) */}
       {isOpen && (
-        <div id="mobile-menu" className="md:hidden px-4 pb-4 bg-[#FFD8B3] space-y-2 font-caveat">
-          <Link to="/adoptanten" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
+        <div
+          id="mobile-menu"
+          className="md:hidden px-4 pb-4 bg-[#FFD8B3] space-y-2"
+        >
+          <Link
+            to="/hunde"
+            className="block text-[#4A2F1B] hover:text-[#fa6a02]"
+          >
             Hunde
           </Link>
-          <Link to="/tierschutzvereine" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
+          <Link
+            to="/tierschutzvereine"
+            className="block text-[#4A2F1B] hover:text-[#fa6a02]"
+          >
             Tierschutzvereine
           </Link>
-          <Link to="/ehrenamt-im-tierschutz" className="block text-[#4A2F1B] hover:text-[#fa6a02]">
+          <Link
+            to="/ehrenamt-im-tierschutz"
+            className="block text-[#4A2F1B] hover:text-[#fa6a02]"
+          >
             Vor- und Nachkontrolleur:innen
           </Link>
-
         </div>
       )}
     </nav>

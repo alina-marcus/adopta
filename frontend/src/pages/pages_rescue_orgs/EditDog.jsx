@@ -153,8 +153,9 @@ const handleChange = (e) => {
   /* ---------- SUBMIT ---------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
-
+    console.log("form submitted")
+    // if (!validate()) return;
+    console.log("validated")
     try {
       const res = await fetch(`http://localhost:5001/dogs/${id}`, {
         method: "PUT",
@@ -568,7 +569,11 @@ const handleChange = (e) => {
         </section>
       </div>
 
-      <button className="button-primary">Änderungen speichern</button>
+      <button 
+      type="submit"
+      className="button-primary">
+        Änderungen speichern
+      </button>
 
             {/* ---------- LÖSCHEN ---------- */}
       <section className="mt-12 pt-6 border-t border-gray-300">

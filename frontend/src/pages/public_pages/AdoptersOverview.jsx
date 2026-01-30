@@ -62,10 +62,7 @@ export default function AdoptersOverview() {
             {/* Bild */}
             <div className="relative h-56 overflow-hidden">
               <img
-                src={
-                  dog.profile_image_url ||
-                  "https://images.unsplash.com/photo-1558788353-f76d92427f16"
-                }
+                src={dog.image || "https://images.unsplash.com/photo-1558788353-f76d92427f16"}
                 alt={dog.dog_name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -73,11 +70,11 @@ export default function AdoptersOverview() {
 
             {/* Inhalt */}
             <div className="p-5 flex flex-col gap-3">
-              <h2 className="text-xl font-semibold">{dog.name}</h2>
+              <h2 className="text-xl font-semibold">{dog.dog_name}</h2>
 
               <p className="text-sm text-gray-500">
-                {dog.current_location_type || "Auf Pflegestelle"} |{" "}
-                {dog.breed || "Unbekannt"}
+                {dog.current_location_type?.trim() ? dog.current_location_type : "Auf Pflegestelle"} |{" "}
+                {dog.breed?.trim() ? dog.breed : "Unbekannt"}
               </p>
 
               <div className="mt-3">

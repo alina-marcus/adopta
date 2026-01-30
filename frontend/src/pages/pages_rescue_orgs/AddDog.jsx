@@ -100,7 +100,7 @@ export default function DogForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    console.log(typeof formData.birth_date);
 
     // if (!validate()) return;
 
@@ -112,11 +112,11 @@ export default function DogForm() {
     });
 
       const result = await response.json();
-
+      console.log(result.id)
       if (response.ok) {
     
         alert("Hund gespeichert");
-        navigate(`/tsv/hund/${id}`);
+        navigate(`/tsv/hund/${result.id}`);
       } 
     }
     catch(err) {
@@ -479,6 +479,7 @@ export default function DogForm() {
             options={{
               1: "Tierhilfe Rumänien e.V.",
               2: "Pfotenfreunde Spanien",
+              3: "Alina's Rescue Org"
             }}
             onChange={handleChange}
           />

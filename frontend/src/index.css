@@ -55,11 +55,11 @@
   /* ---------- BUTTONS ---------- */
 
   .button-primary {
-    @apply px-8 py-3 rounded-lg bg-black text-white transition cursor-pointer;
+    @apply px-8 py-3 rounded-lg bg-black text-white transition cursor-pointer appearance-none shadow-none;
   }
 
   .button-primary:hover {
-    @apply bg-gray-600;
+    @apply bg-gray-600 appearance-none shadow-none;
   }
 
   .button-secondary {

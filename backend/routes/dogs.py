@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
-from datetime import datetime
+from datetime import datetime, date
 from sqlalchemy.inspection import inspect
-
 
 from db import get_session
 from models.dog import Dog
@@ -13,10 +12,25 @@ dogs_bp = Blueprint("dogs", __name__)
 # Hilfsfunktion
 # -------------------------
 def to_dict(obj):
-    return {
-        c.key: getattr(obj, c.key)
-        for c in inspect(obj).mapper.column_attrs
-    }
+    out = {c.key: getattr(obj, c.key) for c in inspect(obj).mapper.column_attrs}
+
+    # Date -> ISO String für JSON
+    if "birth_date" in out and out["birth_date"] is not None:
+        if isinstance(out["birth_date"], (datetime, date)):
+            out["birth_date"] = out["birth_date"].isoformat()
+
+    return out
+
+
+def parse_birth_date(value):
+    """Accepts None/''/'null', 'YYYY-MM-DD' string, or python date."""
+    if value in (None, "", "null"):
+        return None
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str):
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    raise ValueError("birth_date must be a string 'YYYY-MM-DD' or null")
 
 
 # -------------------------
@@ -25,16 +39,13 @@ def to_dict(obj):
 @dogs_bp.route("/dogs", methods=["POST"])
 def create_dog():
     session = get_session()
-    data = request.get_json()
-    # --- FIX: birth_date String -> Python date (or None) ---
-    if "birth_date" in data:
-        print(data.get("birth_date"))
-        print(type(data.get("birth_date")))
-        if data["birth_date"] in (None, "", "null"):
-            data["birth_date"] = None
-        else:
-            # erwartet "YYYY-MM-DD"
-            data["birth_date"] = datetime.strptime(data["birth_date"], "%Y-%m-%d").date()
+    data = request.get_json() or {}
+
+    try:
+        if "birth_date" in data:
+            data["birth_date"] = parse_birth_date(data.get("birth_date"))
+    except Exception as e:
+        return jsonify({"error": "Invalid birth_date", "details": str(e)}), 400
 
     dog = Dog(**data)
     session.add(dog)
@@ -51,14 +62,7 @@ def list_dogs():
     session = get_session()
     dogs = session.query(Dog).all()
 
-    return jsonify([
-        {
-            "id": d.id,
-            "name": d.dog_name,
-            "status": d.status,
-        }
-        for d in dogs
-    ])
+    return jsonify([to_dict(d) for d in dogs]), 200
 
 
 # -------------------------
@@ -72,7 +76,7 @@ def get_dog(dog_id):
     if not dog:
         return jsonify({"error": "Dog not found"}), 404
 
-    return jsonify(to_dict(dog))
+    return jsonify(to_dict(dog)), 200
 
 
 # -------------------------
@@ -86,10 +90,12 @@ def update_dog(dog_id):
     if not dog:
         return jsonify({"error": "Dog not found"}), 404
 
-    data = request.get_json()
+    data = request.get_json() or {}
 
     UPDATABLE_FIELDS = {
         "dog_name",
+        "image",
+        "status",
         "chip_number",
         "passport_number",
         "gender",
@@ -135,20 +141,19 @@ def update_dog(dog_id):
         "looking_for_sponsorship",
     }
 
-    for field in UPDATABLE_FIELDS:
-        if field in data:
-            if field == "birth_date":
-                if data[field] in (None, "", "null"):
-                    setattr(dog, field, None)
+    try:
+        for field in UPDATABLE_FIELDS:
+            if field in data:
+                if field == "birth_date":
+                    setattr(dog, field, parse_birth_date(data.get(field)))
                 else:
-                    setattr(dog, field, datetime.strptime(data[field], "%Y-%m-%d").date())
-            else:
-                setattr(dog, field, data[field])
-
+                    setattr(dog, field, data.get(field))
+    except Exception as e:
+        return jsonify({"error": "Update failed", "details": str(e)}), 400
 
     session.commit()
-
     return jsonify(to_dict(dog)), 200
+
 
 # -------------------------
 # DELETE
@@ -156,7 +161,7 @@ def update_dog(dog_id):
 @dogs_bp.route("/dogs/<int:dog_id>", methods=["DELETE"])
 def delete_dog(dog_id):
     session = get_session()
-    dog = session.query(Dog).get(dog_id)
+    dog = session.get(Dog, dog_id)
 
     if not dog:
         return jsonify({"error": "Dog not found"}), 404
@@ -165,4 +170,3 @@ def delete_dog(dog_id):
     session.commit()
 
     return jsonify({"message": "Dog deleted"}), 200
-

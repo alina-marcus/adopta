@@ -46,12 +46,12 @@ const LABELS_DE = {
   transport_tolerant: "Transportverträglich",
   can_climb_stairs: "Kann Treppen steigen",
 
-  has_illnesses: "Krankheiten vorhanden",
+  has_illnesses: "Bekannte Vorerkrankungen vorhanden",
   illness_description: "Beschreibung der Krankheiten",
-  treatment_costs_covered: "Behandlungskosten übernommen",
+  treatment_costs_covered: "Behandlungskosten werden vom Verein übernommen",
   neutered: "Kastriert",
   vaccinated: "Geimpft",
-  has_handicap: "Körperliche Einschränkung",
+  has_handicap: "Bekannte körperliche Einschränkungen",
   is_blind: "Blind",
   is_deaf: "Taub",
 

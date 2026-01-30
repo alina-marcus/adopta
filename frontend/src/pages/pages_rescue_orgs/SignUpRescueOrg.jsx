@@ -41,7 +41,7 @@ export default function SignUpRescueOrg() {
 
       await res.json();
 
-      alert("Rescue organization successfully registered");
+      alert("Registrierung erfolgreich!");
       navigate("/tsv/meine-hunde");
     } catch (err) {
       console.error(err);
@@ -79,7 +79,7 @@ export default function SignUpRescueOrg() {
 
           <button
             type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded-lg"
+            className="button-primary"
           >
             Jetzt registrieren
           </button>
